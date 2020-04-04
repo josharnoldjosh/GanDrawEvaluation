@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="demo.css">
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<div>
+
+<table class='table'>
+<tr>
+  <td width=11% valign="center"><h4>Fill/brush color: </h4></td>
+  <td width=4% valign="center"><canvas id="brush_color"></canvas></td>      
+  <td width=11% valign="center"><h4>Brush shape: </h4></td>
+  <td width=10%>
+      <button id="brush_circle" class="btn brush_circle"></button>
+      <button id="brush_square" class="btn brush_square"></button>
+      <button id="brush_diamond" class="btn brush_diamond"></button>    
+  </td>
+  <td width=9%><h4>Brush size: </h4></td>
+  <td width=4%><h4><span id="rangevalue"></span></h4></td>
+  <td> <input type="range" step= "2" min="2" max="200" value="24" class="slider" id="myRange"> </td>
+  <td width=10% align='right'>
+    <a target="_blank" href='https://www.nvidia.com/en-us/research/'><img src='nvidia.png' style="width:100%;"></a>
+  </td>  
+  <td width=12% align='center'><h4>GanDraw - Alpha</h4><td>  
+</tr>
+</table>
+
+<table class='table' id="main_frame">
+<tr> 
+<td  width=8% valign="top">
+<div class='btn-group' id="category">
+<table>
+<!-- <tr><th><button class="btncat cat-bldg">Building</button></th></tr> -->
+<tr><th><button class="btncat cat-ground">Ground</button></th></tr>
+<tr><th><button class="btncat cat-landscape cat-active">Landscape</button></th></tr>
+<tr><th><button class="btncat cat-plant">Plant</button></th></tr>
+</table>
+</div>
+<hr>
+<div class="btn-group" id="palette"> 
+</div>
+</td>
+
+<td valign='top' class='td' align='center'>
+<table>
+<tr><th><button id="new" class="btn new"></button></th></tr>
+<tr><th><button id="brush" class="btn brush"></button></th></tr>
+<tr><th><button id="fill" class="btn fill"></button></th></tr>
+<tr><th><button id="eyedropper" class="btn eyedropper"></button></th></tr>
+<tr><th><button id="undo" class="btn undo"></button></th></tr>
+</table>
+</td>
+
+<td align='center'><canvas id="viewport"></canvas> </td>
+<td valign='bottom' algin='left'>
+  <a id="download" download="gaugan_input.png" href="#" onclick="download_segmap(this);"><button id="save" class="btn save"></button></a>
+</td>
+<td valign='center' class='td' align='center'>
+<button id="render" class="btn render"></button></td>
+<td align='center'><canvas id="output"></canvas> </td>
+<td valign='bottom' algin='left'>
+<a id="download" download="gaugan_output.jpg" href="#" onclick="download_rendered(this);"><button id="save_render" class="btn save_render"></button></a>
+</td>
+</tr>
+</table>
+
+
+<table class='table'>
+  <tr>   
+  <th><button id="example0" class="btn example0"></button></th>  
+  <th><button id="example1" class="btn example1"></button></th>
+  <th><button id="example2" class="btn example2"></button></th>
+  <th><button id="example3" class="btn example3"></button></th>
+  <th><button id="example4" class="btn example4"></button></th>
+  <th><button id="example5" class="btn example5"></button></th>
+  <th><button id="example6" class="btn example6"></button></th>
+  <th><button id="example7" class="btn example7"></button></th>
+  <th><button id="example8" class="btn example8"></button></th>
+  <th><button id="example9" class="btn example9"></button></th>
+  <th><button id="example10" class="btn example10"></button></th>
+  <th></th> <th></th> <th></th> <th></th> <th></th> <th></th>    
+  <th><div class="container"><canvas id="custom"></canvas>
+      <button id="customBtn" class="btn">b</button></div></th>
+  </tr>
+</table>
+
+<!-- Required -->
+<input type="checkbox" id="myCheck" value=0 style="width:0px;height:0px;" onclick="toggleCheckbox()">
+<canvas id="output2k"></canvas>
+<script src="demo.js"> </script>
+<script>toggleCheckbox();</script>
+
+<div id="chatbox" style="width: 100%; display: flex; flex-direction: column; align-content: flex-start; align-items: flex-start;">
+  
+  <textarea style="width: 700px; margin: 20px; height: 250px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 20px;">
+    Teller: there is a mountain in the background
+  </textarea>
+
+  <div style="display: flex; justify-content: center; align-items: center; align-content: center;">
+    <b style="height: 25px; margin: 20px;">Enter text HERE & press enter to send:</b>
+    <input type="text" id="textfield_input" class="textfield" style="width: 347px;">     
+  </div>
+
+</div>
+
+</body>
+</html>
