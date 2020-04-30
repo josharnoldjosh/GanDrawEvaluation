@@ -893,6 +893,8 @@ download_rendered = function(_0xe799x84) {
     _0xe799x84['href'] = _0xe799x85    
 };
 
-
+// Image string
+//var image_in_base64 = canvas['toDataURL']('image/png');
+    
 // This gives us the image string!!!
 //var image_in_base64 = canvas_output2k['toDataURL']('image/jpeg');
