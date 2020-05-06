@@ -15,12 +15,52 @@ $(document).ready(function() {
 
     socket = io.connect('http://' + document.domain + ':' + location.port);
 
+    var code = "{{code}}";
+    var most_recent_seg_map = "{{seg_map}}";
+    var most_recent_synth = "{{synth}}";    
+    var most_recent_dialog = `{{dialog}}`;
+    var current_style = "{{style}}";
+    var token = "{{token}}";
+    document.getElementById("token").innerText = token;
+
+    // Update retrieved data
+    document.getElementById("chat").value = most_recent_dialog;
+    document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+    document.getElementById('result').src = most_recent_synth;
+
+    console.log(most_recent_seg_map);
+
+    var _0xe799x8b = new Image();
+    _0xe799x8b['src'] = most_recent_seg_map;
+    function _0xe799x8d() {
+        context['clearRect'](0, 0, canvas['width'], canvas['height']);
+        context['drawImage'](_0xe799x8b, 0, 0, canvas['width'], canvas['height'])
+    }
+    _0xe799x8b['onload'] = _0xe799x8d;
+    // context['clearRect'](0, 0, canvas['width'], canvas['height']);
+    context['drawImage'](_0xe799x8b, 0, 0, CANVAS_WIDTH_2K, CANVAS_HEIGHT_2K);
+    console.log("replace_seg_map!");
+
     // Data recieved
     socket.on('response', function(data) {
         document.getElementById("chat").value += "Bot: " + data['text'] + '\n\n';
         document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
-        document.getElementById('result').src = data["synth"];
+        token = data['token']
+        document.getElementById("token").innerText = token;
+        if (!data["success"]) {
+          alert("Sorry, you submitted too soon! Please try converting ONLY YOUR IMAGE again! (don't send the same message, just click the convert arrow)");
+        }else{
+          document.getElementById('result').src = data["synth"];
+        }
+    });
 
+    // Style Response
+    socket.on('style_response', function(data) {        
+        if (!data["success"]) {
+            alert("Sorry, you submitted too soon! Please try resubmitting again!");
+        }else{
+          document.getElementById('result').src = data["synth"];
+        }
     });
 
      // Enter key pressed - send data
@@ -36,7 +76,8 @@ $(document).ready(function() {
                   // Seg map
                   var image_in_base64 = canvas['toDataURL']('image/png');
 
-                  socket.emit('message', {'text':txt, 'seg_map':image_in_base64});       
+                  // Emit
+                  socket.emit('message', {'text':txt, 'seg_map':image_in_base64, "code":code, "style":current_style});       
                   
                   document.getElementById("chat").value += "You: " + txt + '\n\n';
                   document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
@@ -47,8 +88,26 @@ $(document).ready(function() {
                   alert("Your message is too short!");
               }                     
           }
-      });
+      });    
 
+    function change_style(style_id) {
+        // Emit
+        socket.emit('change_style', {'style':style_id, 'seg_map':canvas['toDataURL']('image/png'), "code":code}); 
+        current_style = style_id;      
+    };
+
+    document.getElementById("example0").addEventListener('click', function(){change_style("0");});
+    document.getElementById("example1").addEventListener('click', function(){change_style("1");});
+    document.getElementById("example2").addEventListener('click', function(){change_style("2");});
+    document.getElementById("example3").addEventListener('click', function(){change_style("3");});
+    document.getElementById("example4").addEventListener('click', function(){change_style("4");});
+    document.getElementById("example5").addEventListener('click', function(){change_style("5");});
+    document.getElementById("example6").addEventListener('click', function(){change_style("6");});
+    document.getElementById("example7").addEventListener('click', function(){change_style("7");});
+    document.getElementById("example8").addEventListener('click', function(){change_style("8");});
+    document.getElementById("example9").addEventListener('click', function(){change_style("9");});
+    document.getElementById("example10").addEventListener('click', function(){change_style("10");});
+    document.getElementById("render").addEventListener('click', function(){change_style(current_style);});
   });
 </script>
 
@@ -111,8 +170,8 @@ $(document).ready(function() {
 <td valign='center' class='td' align='center'>
 <button id="render" class="btn render"></button></td>
 <td align='center'>
-  <!-- <canvas style="width: 0px; height: 0px;" id="output"></canvas>  -->
-  <canvas id="output"></canvas> 
+  <canvas style="width: 0px; height: 0px;" id="output"></canvas> 
+  <!-- <canvas id="output"></canvas>  -->
   <img id="result" style="width: 512px; height: 512px; background-color: lightgray; margin: 30px;"></img>
 </td>
 <td valign='bottom' algin='left'>
@@ -121,23 +180,22 @@ $(document).ready(function() {
 </tr>
 </table>
 
-
-<table class='table' style="visibility: hidden;">
+<table class='table' style="visibility: visible;">
   <tr>   
   <th><button id="example0" class="btn example0"></button></th>  
-  <th><button id="example1" class="btn example1"></button></th>
-  <th><button id="example2" class="btn example2"></button></th>
-  <th><button id="example3" class="btn example3"></button></th>
-  <th><button id="example4" class="btn example4"></button></th>
-  <th><button id="example5" class="btn example5"></button></th>
-  <th><button id="example6" class="btn example6"></button></th>
-  <th><button id="example7" class="btn example7"></button></th>
-  <th><button id="example8" class="btn example8"></button></th>
-  <th><button id="example9" class="btn example9"></button></th>
-  <th><button id="example10" class="btn example10"></button></th>
+  <th><button id="example1" class="btn example1" ></button></th>
+  <th><button id="example2" class="btn example2" ></button></th>
+  <th><button id="example3" class="btn example3" ></button></th>
+  <th><button id="example4" class="btn example4" ></button></th>
+  <th><button id="example5" class="btn example5" ></button></th>
+  <th><button id="example6" class="btn example6" ></button></th>
+  <th><button id="example7" class="btn example7" ></button></th>
+  <th><button id="example8" class="btn example8" ></button></th>
+  <th><button id="example9" class="btn example9" ></button></th>
+  <th><button id="example10" class="btn example10" ></button></th>
   <th></th> <th></th> <th></th> <th></th> <th></th> <th></th>    
   <th><div class="container"><canvas id="custom"></canvas>
-      <button id="customBtn" class="btn">b</button></div></th>
+      <button id="customBtn" class="btn" style="visibility: hidden;">b</button></div></th>
   </tr>
 </table>
 
@@ -149,6 +207,7 @@ $(document).ready(function() {
 
 
 <script src="{{ url_for('static',filename='demo.js')}}"> </script>
+
 <script>toggleCheckbox();</script>
 
 <div id="chatbox" style="width: 100%; display: flex; flex-direction: column; align-content: flex-start; align-items: flex-start;">
@@ -158,6 +217,10 @@ $(document).ready(function() {
   <div style="display: flex; justify-content: center; align-items: center; align-content: center;">
     <b style="height: 25px; margin: 20px;">Enter text HERE & press enter to send:</b>
     <input type="text" id="textfield_input" class="textfield" style="width: 347px;">     
+  </div>
+
+  <div style="display: flex; justify-content: center; align-items: center; align-content: center;, flex-direction: row;">
+    <b style="font-size: 25px; margin: 20px;">Token to submit on MTurk will appear here: </b> <p id="token" style="font-size: 25px; color: red; margin: 0px;"></p>
   </div>
 </div>
 

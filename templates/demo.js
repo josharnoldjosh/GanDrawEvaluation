@@ -222,6 +222,9 @@ function render() {
     if (_0xe799x43 != 1) {
         alert('Please check the button in terms and conditions section before starting using the app.')
     } else {
+        console.log("test!");
+        console.log(canvas['toDataURL']);
+        console.log(canvas['toDataURL']());
         $['ajax']({
             type: 'POST',
             url: Url + 'nvidia_gaugan_submit_map',

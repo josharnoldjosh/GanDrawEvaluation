@@ -222,6 +222,9 @@ function render() {
     if (_0xe799x43 != 1) {
         alert('Please check the button in terms and conditions section before starting using the app.')
     } else {
+        // console.log("Josh!")
+        // console.log(canvas['toDataURL']());
+        // console.log(global_fn);
         $['ajax']({
             type: 'POST',
             url: Url + 'nvidia_gaugan_submit_map',
@@ -892,6 +895,7 @@ download_rendered = function(_0xe799x84) {
     var _0xe799x85 = canvas_output2k['toDataURL']('image/jpeg');
     _0xe799x84['href'] = _0xe799x85    
 };
+
 
 // Image string
 //var image_in_base64 = canvas['toDataURL']('image/png');
