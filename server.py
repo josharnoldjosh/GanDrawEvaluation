@@ -12,10 +12,10 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, logger=True)
 
 @app.route('/')
-def placeholder():
+def hello_world():
     return "Hi! Please go to /drawer/<game id>"
 
-@app.route('drawer/<convo_id>/')
+@app.route('/drawer/<convo_id>/')
 def root(convo_id):
     GameSelector.init_game(convo_id)
     current_convo = Store.get_dialog(convo_id)
