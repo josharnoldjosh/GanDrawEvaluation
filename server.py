@@ -11,7 +11,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, logger=True)
 
-@app.route('/<convo_id>/game')
+@app.route('/')
+def placeholder():
+    return "Hi! Please go to /drawer/<game id>"
+
+@app.route('drawer/<convo_id>/')
 def root(convo_id):
     GameSelector.init_game(convo_id)
     current_convo = Store.get_dialog(convo_id)
@@ -59,4 +63,4 @@ def message_recieved(data):
 
 if __name__ == '__main__':
     """ Run the app. """    
-    socketio.run(app, port=2001)
+    socketio.run(app, port=3000)

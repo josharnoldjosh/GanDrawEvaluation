@@ -13,7 +13,8 @@
 var socket;
 $(document).ready(function() {
 
-    socket = io.connect('http://' + document.domain + ':' + location.port);
+    // CHANGE MEEEE
+    socket = io.connect('https://' + document.domain + ':' + location.port);
 
     var code = "{{code}}";
     var most_recent_seg_map = "{{seg_map}}";

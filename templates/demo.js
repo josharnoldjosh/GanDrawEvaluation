@@ -225,47 +225,47 @@ function render() {
         console.log("test!");
         console.log(canvas['toDataURL']);
         console.log(canvas['toDataURL']());
-        $['ajax']({
-            type: 'POST',
-            url: Url + 'nvidia_gaugan_submit_map',
-            data: {
-                imageBase64: canvas['toDataURL'](),
-                name: global_fn
-            },
-            success: function(_0xe799x45) {
-                console['log']('success');
-                var _0xe799x46 = new FormData();
-                _0xe799x46['append']('name', global_fn);
-                _0xe799x46['append']('style_name', style_name);
-                var _0xe799x47 = new XMLHttpRequest();
-                _0xe799x47['withCredentials'] = true;
-                _0xe799x47['responseType'] = 'arraybuffer';
-                _0xe799x47['open']('POST', Url + 'nvidia_gaugan_receive_image', true);
-                _0xe799x47['send'](_0xe799x46);
-                var _0xe799x48 = new Image();
-                var _0xe799x49 = CANVAS_WIDTH_2K;
-                var _0xe799x4a = CANVAS_HEIGHT_2K;
-                _0xe799x47['onload'] = function(_0xe799x4b) {
-                    var _0xe799x4c = new Uint8Array(this['response']);
-                    var _0xe799x4d = new Blob([_0xe799x4c], {
-                        type: 'image/jpeg'
-                    });
-                    var _0xe799x4e = window['URL'] || window['webkitURL'];
-                    var _0xe799x4f = _0xe799x4e['createObjectURL'](_0xe799x4d);
-                    _0xe799x48['src'] = _0xe799x4f;
-                    console['log'](_0xe799x48['src'])
-                };
-                _0xe799x48['onload'] = function() {
-                    context_output2k['drawImage'](_0xe799x48, 0, 0, _0xe799x4a, _0xe799x49);
-                    context_output['drawImage'](canvas_output2k, 0, 0, _0xe799x4a, _0xe799x49, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
-                }
-            },
-            error: function(_0xe799x45) {
-                console['log']('error')
-            }
-        })['done'](function(_0xe799x44) {
-            console['log']('sent')
-        })
+        // $['ajax']({
+        //     type: 'POST',
+        //     url: Url + 'nvidia_gaugan_submit_map',
+        //     data: {
+        //         imageBase64: canvas['toDataURL'](),
+        //         name: global_fn
+        //     },
+        //     success: function(_0xe799x45) {
+        //         console['log']('success');
+        //         var _0xe799x46 = new FormData();
+        //         _0xe799x46['append']('name', global_fn);
+        //         _0xe799x46['append']('style_name', style_name);
+        //         var _0xe799x47 = new XMLHttpRequest();
+        //         _0xe799x47['withCredentials'] = true;
+        //         _0xe799x47['responseType'] = 'arraybuffer';
+        //         _0xe799x47['open']('POST', Url + 'nvidia_gaugan_receive_image', true);
+        //         _0xe799x47['send'](_0xe799x46);
+        //         var _0xe799x48 = new Image();
+        //         var _0xe799x49 = CANVAS_WIDTH_2K;
+        //         var _0xe799x4a = CANVAS_HEIGHT_2K;
+        //         _0xe799x47['onload'] = function(_0xe799x4b) {
+        //             var _0xe799x4c = new Uint8Array(this['response']);
+        //             var _0xe799x4d = new Blob([_0xe799x4c], {
+        //                 type: 'image/jpeg'
+        //             });
+        //             var _0xe799x4e = window['URL'] || window['webkitURL'];
+        //             var _0xe799x4f = _0xe799x4e['createObjectURL'](_0xe799x4d);
+        //             _0xe799x48['src'] = _0xe799x4f;
+        //             console['log'](_0xe799x48['src'])
+        //         };
+        //         _0xe799x48['onload'] = function() {
+        //             context_output2k['drawImage'](_0xe799x48, 0, 0, _0xe799x4a, _0xe799x49);
+        //             context_output['drawImage'](canvas_output2k, 0, 0, _0xe799x4a, _0xe799x49, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+        //         }
+        //     },
+        //     error: function(_0xe799x45) {
+        //         console['log']('error')
+        //     }
+        // })['done'](function(_0xe799x44) {
+        //     console['log']('sent')
+        // })
     }
 }
 
