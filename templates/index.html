@@ -49,7 +49,7 @@ $(document).ready(function() {
         token = data['token']
         document.getElementById("token").innerText = token;
         if (!data["success"]) {
-          alert("Sorry, you submitted too soon! Please try converting ONLY YOUR IMAGE again! (don't send the same message, just click the convert arrow)");
+          // alert("Sorry, you submitted too soon! Please try converting ONLY YOUR IMAGE again! (don't send the same message, just click the convert arrow)");
         }else{
           document.getElementById('result').src = data["synth"];
         }
@@ -58,7 +58,7 @@ $(document).ready(function() {
     // Style Response
     socket.on('style_response', function(data) {        
         if (!data["success"]) {
-            alert("Sorry, you submitted too soon! Please try resubmitting again!");
+            // alert("Sorry, you submitted too soon! Please try resubmitting again!");
         }else{
           document.getElementById('result').src = data["synth"];
         }
