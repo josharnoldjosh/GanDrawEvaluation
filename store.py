@@ -3,6 +3,9 @@ import json
 import base64
 from random import choice
 from uuid import uuid4
+from enum import Enum
+from PIL import Image
+import io
 
 """
 I've done this a bit weird, where I generate the first response of the Teller, then I store data as
@@ -20,6 +23,10 @@ But this is so the socket io & networking is easier, so when I post process this
 This should be super easy since each image of the turn is literally bundled in the json data.
 """
 
+class UserType(Enum):
+    drawer=0
+    teller=1
+
 class TellerBot:
 
     @classmethod
@@ -36,6 +43,17 @@ class TellerBot:
         except:
             return "okay, I think we're done"
 
+class DrawerBot:
+    @classmethod
+    def speak(cls, convo_id):
+        data = Store.load_data(convo_id)
+        num_turns = len(data['dialog'])
+        turns = ["Okay, next instruction please.", "I just drew it. What's next?", "Anything else?", "Ok, done. Anything else?"]
+        try:
+            return turns[num_turns]
+        except:
+            return "okay, I think we're done"
+
 class GameSelector:
 
     @classmethod
@@ -46,10 +64,12 @@ class GameSelector:
         return synth, real
 
     @classmethod
-    def init_game(cls, convo_id):       
+    def init_game(cls, convo_id, user_type):       
         if GameSelector.game_exists(convo_id): return 
         data = Store.load_data(convo_id)
-        data['first_bot_utt'] = TellerBot.first_utterance(data)
+        data['user_type'] = user_type.value
+        if user_type == user_type.drawer:
+            data['first_bot_utt'] = TellerBot.first_utterance(data)
         Store.save_data(convo_id, data)
 
     @classmethod
@@ -73,20 +93,32 @@ class Store:
         return x.replace("'", "").lower()
 
     @classmethod
-    def save(cls, convo_id, user_utt, bot_utt, seg_map, synth, style, success):
+    def save(cls, convo_id, user_utt, bot_utt, seg_map=None, synth=None, style=None, success=None):
         """
         If it fails, we save the seg map but use the synth from previous image
         We tag this turn as failed, so we know to update the synth from the seg map
         """
         data = Store.load_data(convo_id)
-        if not success: synth = data['dialog'][-1]['synth']            
-        data["dialog"].append({"user":Store.preprocess_string(user_utt), "bot":Store.preprocess_string(bot_utt), "seg_map":seg_map, "synth":synth, "style":style, "success":success})            
+        if not seg_map or not synth or not style:
+            data["dialog"].append({"user":Store.preprocess_string(user_utt), "bot":Store.preprocess_string(bot_utt)})            
+        else:    
+            if not success: synth = data['dialog'][-1]['synth']            
+            data["dialog"].append({"user":Store.preprocess_string(user_utt), "bot":Store.preprocess_string(bot_utt), "seg_map":seg_map, "synth":synth, "style":style, "success":success})            
         Store.save_data(convo_id, data)
 
     @classmethod
     def target_image_data(cls, convo_id):
         data = Store.load_data(convo_id)
-        return data['target_image']['synth'], data['target_image']['seg_map']
+        def path_to_bytes(path):
+            path_to_try = f"{os.getcwd()}/target_images/{path}"
+            try:
+                image = Image.open(path_to_try)
+                imgByteArr = io.BytesIO()
+                image.save(imgByteArr, format='PNG')        
+                return 'data:image/png;base64,'+ base64.b64encode(imgByteArr.getvalue()).decode('ascii')
+            except:
+                print(path_to_try)
+        return path_to_bytes(data['target_image']['synth']), path_to_bytes(data['target_image']['seg_map'])
 
     @classmethod
     def load_data(cls, convo_id):
@@ -116,7 +148,9 @@ class Store:
     @classmethod
     def get_dialog(cls, convo_id):
         data = Store.load_data(convo_id)
-        text = f"{data['first_bot_utt']}\n\n" + "\n\n".join([f"You: {x['user']}\n\nTeller: {x['bot']}" for x in data["dialog"]]) + "\n\n"
+        other_user = "Teller"
+        if data['user_type'] == UserType.teller.value: other_user = "Drawer"
+        text = f"{data['first_bot_utt']}\n\n" + "\n\n".join([f"You: {x['user']}\n\n{other_user}: {x['bot']}" for x in data["dialog"]]) + "\n\n"
         return text.strip()+"\n\n"
 
     @classmethod

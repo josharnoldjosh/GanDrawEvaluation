@@ -13,8 +13,9 @@
 var socket;
 $(document).ready(function() {
 
-    // CHANGE MEEEE
-    socket = io.connect('https://' + document.domain + ':' + location.port);
+    
+    socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port);
+    
 
     var code = "{{code}}";
     var most_recent_seg_map = "{{seg_map}}";
@@ -44,24 +45,26 @@ $(document).ready(function() {
 
     // Data recieved
     socket.on('response', function(data) {
-        document.getElementById("chat").value += "Bot: " + data['text'] + '\n\n';
-        document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
-        token = data['token']
-        document.getElementById("token").innerText = token;
-        if (!data["success"]) {
-          // alert("Sorry, you submitted too soon! Please try converting ONLY YOUR IMAGE again! (don't send the same message, just click the convert arrow)");
-        }else{
-          document.getElementById('result').src = data["synth"];
-        }
+      if (data['code'] != code) return;
+      document.getElementById("chat").value += "Bot: " + data['text'] + '\n\n';
+      document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+      token = data['token']
+      document.getElementById("token").innerText = token;
+      if (!data["success"]) {
+        // alert("Sorry, you submitted too soon! Please try converting ONLY YOUR IMAGE again! (don't send the same message, just click the convert arrow)");
+      }else{
+        document.getElementById('result').src = data["synth"];
+      }
     });
 
     // Style Response
-    socket.on('style_response', function(data) {        
-        if (!data["success"]) {
-            // alert("Sorry, you submitted too soon! Please try resubmitting again!");
-        }else{
-          document.getElementById('result').src = data["synth"];
-        }
+    socket.on('style_response', function(data) {     
+      if (data['code'] != code) return;   
+      if (!data["success"]) {
+          // alert("Sorry, you submitted too soon! Please try resubmitting again!");
+      }else{
+        document.getElementById('result').src = data["synth"];
+      }
     });
 
      // Enter key pressed - send data
@@ -217,10 +220,10 @@ $(document).ready(function() {
 
   <div style="display: flex; justify-content: center; align-items: center; align-content: center;">
     <b style="height: 25px; margin: 20px;">Enter text HERE & press enter to send:</b>
-    <input type="text" id="textfield_input" class="textfield" style="width: 347px;">     
+    <input type="text" id="textfield_input" class="textfield" style="width: 347px; background-color: beige;">     
   </div>
 
-  <div style="display: flex; justify-content: center; align-items: center; align-content: center;, flex-direction: row;">
+  <div style="display: flex; justify-content: center; align-items: center; align-content: center; flex-direction: row;">
     <b style="font-size: 25px; margin: 20px;">Token to submit on MTurk will appear here: </b> <p id="token" style="font-size: 25px; color: red; margin: 0px;"></p>
   </div>
 </div>
