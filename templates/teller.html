@@ -11,7 +11,7 @@
     <script>
         var socket;
         $(document).ready(function() {
-            socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port);
+            socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port, {path: "/visualchatsocket"});
             
             var code = "{{code}}";
             var most_recent_synth = "{{synth}}";    
@@ -77,8 +77,8 @@
 
             <div style="display: flex; justify-content: center; align-items: center; align-content: center; flex-direction: row;">
               <img style="width: 350px; height: 350px; margin: 10px;" id='target_image'>
-              <img style="width: 350px; height: 350px; margin: 10px; background-color: beige;" id='peak_image'>
-              <button class="button is-primary" id="peak_button" style="margin: 20px;">Peak Image</button>
+              <!-- <img style="width: 350px; height: 350px; margin: 10px; background-color: beige;" id='peak_image'> -->
+              <!-- <button class="button is-primary" id="peak_button" style="margin: 20px;">Peak Image</button> -->
             </div>
 
             <div style="display: flex; justify-content: center; align-items: center; align-content: center; flex-direction: row;">

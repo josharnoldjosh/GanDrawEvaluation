@@ -48,7 +48,7 @@ class DrawerBot:
     def speak(cls, convo_id):
         data = Store.load_data(convo_id)
         num_turns = len(data['dialog'])
-        turns = ["Okay, next instruction please.", "I just drew it. What's next?", "Anything else?", "Ok, done. Anything else?"]
+        turns = ["Okay, next instruction please.", "I just drew it. What's next?"]
         try:
             return turns[num_turns]
         except:

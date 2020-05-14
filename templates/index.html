@@ -4,7 +4,10 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='demo.css')}}">
+
+<!-- Style -->
+<!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='demo.css')}}"> -->
+<link rel="stylesheet" type="text/css" href="https://language.cs.ucdavis.edu/visualchat/static/demo.css">
 
 <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
@@ -14,7 +17,7 @@ var socket;
 $(document).ready(function() {
 
     
-    socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port);
+    socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port, {path: "/visualchatsocket"});
     
 
     var code = "{{code}}";
@@ -209,8 +212,9 @@ $(document).ready(function() {
 
 
 
-
-<script src="{{ url_for('static',filename='demo.js')}}"> </script>
+<!-- Javascript -->
+<!-- <script src="{{ url_for('static',filename='demo.js')}}"> </script> -->
+<script src="https://language.cs.ucdavis.edu/visualchat/static/demo.js"></script>
 
 <script>toggleCheckbox();</script>
 

@@ -7,6 +7,7 @@ import base64
 from api import segmap_to_real
 from config import config
 from time import sleep
+import os
 
 # Init the server
 app = Flask(__name__)
@@ -15,7 +16,7 @@ socketio = SocketIO(app, logger=True)
 
 @app.route('/')
 def hello_world():
-    return "Hi! Please go to /drawer/game_id or /teller/game_id"
+    return os.getcwd()
 
 @app.route('/teller/<convo_id>/')
 def teller(convo_id):
@@ -94,11 +95,11 @@ def teller_message_recieved(data):
     Store.save(code, user_txt, output_text)
 
     # Give impression of drawing
-    sleep(4)
+    sleep(2)
 
     # Send response back
     emit("response", {"text":output_text, "token":token, "code":code})
 
 if __name__ == '__main__':
     """ Run the app. """    
-    socketio.run(app, port=3000)
+    socketio.run(app, port=1234)

@@ -1,0 +1,32 @@
+{
+    "convo_id": "xs7d",
+    "dialog": [
+        {
+            "user": "hello world",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "hello world",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "hello world",
+            "bot": "anything else?"
+        },
+        {
+            "user": "hello world",
+            "bot": "ok, done. anything else?"
+        },
+        {
+            "user": "i think were done",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "c3195a90.jpg",
+        "seg_map": "c3195a90.png"
+    },
+    "first_bot_utt": "",
+    "token": "58698c2a",
+    "user_type": 1
+}
