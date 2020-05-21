@@ -22,13 +22,13 @@ def hello_world():
 def teller(convo_id):
     GameSelector.init_game(convo_id, user_type=UserType.teller)
     current_convo = Store.get_dialog(convo_id)
-    synth, seg_map = Store.target_image_data(convo_id)
+    synth, seg_map, peek_image = Store.target_image_data(convo_id)
     can_submit = GameSelector.can_submit(convo_id)
     token = ""
     if GameSelector.can_submit(convo_id): token = Store.token(convo_id) 
     prefix = 'http'
     if config['secure_connection_enabled']: prefix += 's'
-    return render_template('teller.html', code=convo_id, synth=synth, seg_map=seg_map, dialog=current_convo, can_submit=can_submit, token=token, prefix=prefix)    
+    return render_template('teller.html', code=convo_id, synth=synth, seg_map=seg_map, dialog=current_convo, can_submit=can_submit, token=token, prefix=prefix, peek_image=peek_image)    
 
 @app.route('/drawer/<convo_id>/')
 def drawer(convo_id):
@@ -99,6 +99,11 @@ def teller_message_recieved(data):
 
     # Send response back
     emit("response", {"text":output_text, "token":token, "code":code})
+
+@socketio.on('peek')
+def peek(data):
+    image, peeks_left = Store.update_peek_image(data['code'])
+    emit("peek_response", {"code":data['code'], 'image':image, 'peeks_left':peeks_left})
 
 if __name__ == '__main__':
     """ Run the app. """    

@@ -1,0 +1,43 @@
+<HTMLQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2011-11-11/HTMLQuestion.xsd">
+  <HTMLContent><![CDATA[
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+        <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+        <script type='text/javascript' src='https://s3.amazonaws.com/mturk-public/externalHIT_v1.js'></script>
+    </head>
+
+    <body style="margin: 30px;3">
+        <form name='mturk_form' method='post' id='mturk_form' action='https://www.mturk.com/mturk/externalSubmit'>
+            <input type='hidden' value='' name='assignmentId' id='assignmentId'/>
+
+            <h1>Please visit the external link, complete the task, and paste the code here to submit the hit.</h1>
+            <p>Your goal is to draw whatever the other user says until your code appears and paste it back here. If you paste an incorrect code, we will have to reject your submission. </p>
+
+            <div style="display: flex; margin: 30px;">
+                <div style="margin-left: 50px;">                    
+                    <p class="well" id="task_link_id">${task_link}</p> 
+                    <label for="token">Token:</label>
+                    <input type="text" id="token" name="token"><br><br>
+                </div>
+            </div>
+            
+            <input type="text" id="token_link_id" name="token_link_id" style="visibility: hidden;"><br>
+
+            <p style=" margin: 30px;"><input type='submit' id='submitButton' value='Submit' /></p>
+
+            <script language='Javascript'>turkSetAssignmentID();</script>
+        </form>
+    </body>
+
+    <script>
+        document.getElementById("token_link_id").value = document.getElementById("task_link_id").innerText ;
+    </script>
+</html>
+
+]]>
+  </HTMLContent>
+  <FrameHeight>0</FrameHeight>
+</HTMLQuestion>

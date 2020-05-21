@@ -1,0 +1,32 @@
+{
+    "convo_id": "5fb0ef76",
+    "dialog": [
+        {
+            "user": "describe the image",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "image",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "image",
+            "bot": "okay, i think were done"
+        },
+        {
+            "user": "image",
+            "bot": "okay, i think were done"
+        },
+        {
+            "user": "image",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "28d54390.jpg",
+        "seg_map": "28d54390.png"
+    },
+    "first_bot_utt": "",
+    "token": "dff37683",
+    "user_type": 1
+}

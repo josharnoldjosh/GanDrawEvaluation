@@ -5,6 +5,7 @@ from random import choice
 from uuid import uuid4
 from enum import Enum
 from PIL import Image
+from random import choice
 import io
 
 """
@@ -22,6 +23,17 @@ Turn:
 But this is so the socket io & networking is easier, so when I post process this data it might make sense to offset everything.
 This should be super easy since each image of the turn is literally bundled in the json data.
 """
+
+def path_to_bytes(path, intermediate="target_images"):
+    path_to_try = f"{os.getcwd()}/{intermediate}/{path}"
+    try:
+        image = Image.open(path_to_try)
+        imgByteArr = io.BytesIO()
+        image.save(imgByteArr, format='PNG')        
+        return 'data:image/png;base64,'+ base64.b64encode(imgByteArr.getvalue()).decode('ascii')
+    except:
+        print(path_to_try)
+        return ""
 
 class UserType(Enum):
     drawer=0
@@ -80,6 +92,7 @@ class GameSelector:
     def can_submit(cls, convo_id):
         data = Store.load_data(convo_id)
         num_turns = len(data['dialog'])
+        if data['user_type'] == UserType.teller.value: return num_turns >= 2
         return num_turns >= 4
 
     @classmethod
@@ -108,22 +121,13 @@ class Store:
 
     @classmethod
     def target_image_data(cls, convo_id):
-        data = Store.load_data(convo_id)
-        def path_to_bytes(path):
-            path_to_try = f"{os.getcwd()}/target_images/{path}"
-            try:
-                image = Image.open(path_to_try)
-                imgByteArr = io.BytesIO()
-                image.save(imgByteArr, format='PNG')        
-                return 'data:image/png;base64,'+ base64.b64encode(imgByteArr.getvalue()).decode('ascii')
-            except:
-                print(path_to_try)
-        return path_to_bytes(data['target_image']['synth']), path_to_bytes(data['target_image']['seg_map'])
+        data = Store.load_data(convo_id)        
+        return path_to_bytes(data['target_image']['synth']), path_to_bytes(data['target_image']['seg_map']), path_to_bytes(data['target_image']["most_recent_peek_image"], 'image_data')
 
     @classmethod
     def load_data(cls, convo_id):
         target_synth, target_seg = GameSelector.target_image()
-        data = {"convo_id":convo_id, "dialog":[], "target_image":{"synth":target_synth, "seg_map":target_seg}, "first_bot_utt":"", "token":GameSelector.token()}                
+        data = {"convo_id":convo_id, "dialog":[], "target_image":{"synth":target_synth, "seg_map":target_seg, "most_recent_peek_image":""}, "first_bot_utt":"", "token":GameSelector.token(), "num_peeks_left":2}                
         if not GameSelector.game_exists(convo_id): return data
         with open(os.path.join(os.getcwd(), "saved_data/", f"{convo_id}.json"), 'r') as file: data = json.load(file)
         return data
@@ -170,3 +174,12 @@ class Store:
     @classmethod
     def token(cls, convo_id):
         return Store.load_data(convo_id)['token']
+
+    @classmethod
+    def update_peek_image(cls, convo_id):        
+        data = Store.load_data(convo_id)
+        if data['num_peeks_left'] == 0: return path_to_bytes(data['target_image']['most_recent_peek_image'], 'image_data'), data['num_peeks_left']
+        data['target_image']['most_recent_peek_image'] = choice([x for x in os.listdir("./image_data/") if ".jpg" in x])
+        data['num_peeks_left'] = data['num_peeks_left'] - 1
+        Store.save_data(convo_id, data)
+        return path_to_bytes(data['target_image']['most_recent_peek_image'], 'image_data'), data['num_peeks_left']
