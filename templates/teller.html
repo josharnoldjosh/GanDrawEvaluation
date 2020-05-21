@@ -12,8 +12,8 @@
         var socket;
         $(document).ready(function() {
 
-            // socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port, {path: "/visualchatsocket"});
-            socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port);
+            socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port, {path: "/visualchatsocket"});
+            // socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port);
             
             var code = "{{code}}";
             var most_recent_synth = "{{synth}}";    

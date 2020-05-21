@@ -1,0 +1,30 @@
+{
+    "convo_id": "d62bdc88",
+    "dialog": [
+        {
+            "user": "blue sky and blue pond, mountain of green trees at the halfway down point with some brown shore on the left, a grey mountain in the middle of the background, and white clouds above the green conifers on the right",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "the trees are taller",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "add a lake",
+            "bot": "okay, i think were done"
+        },
+        {
+            "user": "add a mountain",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "c1e48721.jpg",
+        "seg_map": "c1e48721.png",
+        "most_recent_peek_image": "30a3334a.jpg"
+    },
+    "first_bot_utt": "",
+    "token": "c12a0c5e",
+    "num_peeks_left": 0,
+    "user_type": 1
+}

@@ -8,14 +8,16 @@ api = API()
 # Clear hit data
 api.clear_hit_data()
 
-# Need to fix small bug with teller where it only ends after 4 turns instead of 2
+# Options:
+# teller
+# drawer
 user_type = 'drawer'
 
 # Create hits
 for hit_idx in range(config['num_hits']):
 
     # Load question
-    question_sample = open(f"{user_type}.xml", "r").read()
+    question_sample = open(f"./MTurk/{user_type}.xml", "r").read()
 
     # Token
     token = str(uuid4())[:8]

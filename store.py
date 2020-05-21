@@ -158,6 +158,11 @@ class Store:
         return text.strip()+"\n\n"
 
     @classmethod
+    def get_image_data(cls, convo_id):
+        data = Store.load_data(convo_id)
+        return [turn['synth'] for turn in data['dialog']]
+            
+    @classmethod
     def current_image_data(cls, convo_id):
         data = Store.load_data(convo_id)
         try:
@@ -183,3 +188,8 @@ class Store:
         data['num_peeks_left'] = data['num_peeks_left'] - 1
         Store.save_data(convo_id, data)
         return path_to_bytes(data['target_image']['most_recent_peek_image'], 'image_data'), data['num_peeks_left']
+
+    @classmethod
+    def user_type(cls, convo_id):
+        data = Store.load_data(convo_id)
+        return data['user_type']

@@ -15,7 +15,7 @@
 
             <h1>Please visit the external link, complete the task, and paste the code here to submit the hit.</h1>
 
-            <p>Your goal is to describe the image sequentially to the chatbot until your code appears and paste it back here. If you paste an incorrect code, we will have to reject your submission.</p>
+            <p>Your goal is to describe the image sequentially to the chatbot until your code appears and paste it back here. This should be a really really easy task, it should only take 1 minute. There are no wrong answers! Just send some logical messags! :)</p>
 
             <div style="display: flex; margin: 30px;">
                 <div style="margin-left: 50px;">                    

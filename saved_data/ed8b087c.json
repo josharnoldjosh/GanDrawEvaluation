@@ -1,0 +1,30 @@
+{
+    "convo_id": "ed8b087c",
+    "dialog": [
+        {
+            "user": "snowy mountain",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "water flowing the valley",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "on the left we have good greenary",
+            "bot": "okay, i think were done"
+        },
+        {
+            "user": "cloudy sky",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "ce20e948.jpg",
+        "seg_map": "ce20e948.png",
+        "most_recent_peek_image": ""
+    },
+    "first_bot_utt": "",
+    "token": "b4a137b3",
+    "num_peeks_left": 2,
+    "user_type": 1
+}

@@ -1,11 +1,11 @@
 config = {
     'live': False,                                      
-    'reward': '0.4', 
+    'reward': '0.05', 
     'bonus': '0.01',                                   
-    'title': "Fun Drawing/Chatting Task with A.I. Bot",
+    'title': "Fun Drawing/Chatting Task with A.I. Bot SUPER EASY, 1 MINUTE TASK. NO WRONG ANSWERS! :)",
     'keywords': "chat, draw, a.i., fun",
     'description': 'Chat with an AI bot',      
-    'num_hits': 3                                                  
+    'num_hits': 1                                                  
 }
 
 # Define creds
@@ -18,9 +18,9 @@ config = {
 
 credentials = {
     "Credentials": {
-        "AccessKeyId": "ASIA3FHUYW2PFNMRNYXK",
-        "SecretAccessKey": "9oE7Vq/V+KZIfd0iEHM3v8nnpxxURnS2kjjsAS9N",
-        "SessionToken": "FwoGZXIvYXdzEEgaDMSwLb+a+jlKiMhamSJqWA1b8SKshP07BRSMJT3YvoT279k0Qt9zCUAjkWqAhbm0kQJRxo3F+liWm5nfJYNiwpxGDj7dEW0LB+HkQDKzpbluqHc4gmnhZMAIiDeDbdczqPFnPDZyuv1AuivbvUgzVyIaEB2uCax0SiiIi/f1BTIoEZHOcBuiGHsppwpNP0/k/ZRn1eYwW4N4zreB5Wkj590zIxavqsBmqw==",
-        "Expiration": "2020-05-14T23:26:16+00:00"
+        "AccessKeyId": "",
+        "SecretAccessKey": "",
+        "SessionToken": "",
+        "Expiration": ""
     }
 }

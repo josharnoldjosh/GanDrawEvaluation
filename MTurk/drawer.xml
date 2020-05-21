@@ -14,7 +14,7 @@
             <input type='hidden' value='' name='assignmentId' id='assignmentId'/>
 
             <h1>Please visit the external link, complete the task, and paste the code here to submit the hit.</h1>
-            <p>Your goal is to draw whatever the other user says until your code appears and paste it back here. If you paste an incorrect code, we will have to reject your submission. </p>
+            <p>Your goal is to draw whatever the other user says until your code appears and paste it back here. This should be a really really easy task, IT SHOULD ONLY TAKE ONE MINUTE! THERE ARE NO WRONG ANSWERS! Just send some logical messags! And try to draw the best you can, but its okay if it doesn't look perfect! :) </p>
 
             <div style="display: flex; margin: 30px;">
                 <div style="margin-left: 50px;">                    

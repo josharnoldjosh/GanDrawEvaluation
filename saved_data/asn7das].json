@@ -1,0 +1,26 @@
+{
+    "convo_id": "asn7das]",
+    "dialog": [
+        {
+            "user": "there is a mountain in the background",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "continue drawing ",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "looks good i think were done",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "88297b1b.jpg",
+        "seg_map": "88297b1b.png",
+        "most_recent_peek_image": "e678f2cf.jpg"
+    },
+    "first_bot_utt": "",
+    "token": "60cca775",
+    "num_peeks_left": 0,
+    "user_type": 1
+}

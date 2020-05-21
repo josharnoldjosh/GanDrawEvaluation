@@ -3,7 +3,9 @@ import xmltodict
 from api import API
 
 """
-Remember to download the saved data from the server!
+Remember to download the saved_data/ from the server!
+Remember to run from the root folder, EMNLP\ 2020/
+Remember to update token in config.py
 """
 
 api = API()
@@ -46,8 +48,8 @@ for to_delete_idx, hit_data in enumerate(data):
                     else:
                         print("Should reject!")
                         api.client.reject_assignment(AssignmentId=assignment_id, RequesterFeedback='You did not paste in the correct code, which we explicity asked you to do so.')
-                except:
-                    raise ValueError("Failed to extract data")
+                except Exception as error:
+                    raise ValueError(f"Failed to extract data, {error}")
     except Exception as error:
         print(error)
         continue

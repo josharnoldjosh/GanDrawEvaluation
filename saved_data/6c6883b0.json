@@ -1,0 +1,26 @@
+{
+    "convo_id": "6c6883b0",
+    "dialog": [
+        {
+            "user": "there is  very big snowy mountain in the background surrounded by a deep blue body of water",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "next there is a river surrounded by a giant hill",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "there is a rock in the middle of the water",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "ebcbbca0.jpg",
+        "seg_map": "ebcbbca0.png",
+        "most_recent_peek_image": "2db78b06.jpg"
+    },
+    "first_bot_utt": "",
+    "token": "59eb92ca",
+    "num_peeks_left": 0,
+    "user_type": 1
+}

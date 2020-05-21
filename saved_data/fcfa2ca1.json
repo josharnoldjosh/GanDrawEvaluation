@@ -1,0 +1,26 @@
+{
+    "convo_id": "fcfa2ca1",
+    "dialog": [
+        {
+            "user": " 32/5000 its a lake, with very dark water",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "has trees in a small pasture",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "in the background there is a mountain covered with snow",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "61411af0.jpg",
+        "seg_map": "61411af0.png",
+        "most_recent_peek_image": ""
+    },
+    "first_bot_utt": "",
+    "token": "e17042df",
+    "num_peeks_left": 2,
+    "user_type": 1
+}
