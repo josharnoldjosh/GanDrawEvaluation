@@ -27,6 +27,8 @@ $(document).ready(function() {
     var most_recent_dialog = `{{dialog}}`;
     var current_style = "{{style}}";
     var token = "{{token}}";
+    var mode = "{{mode}}";
+
     document.getElementById("token").innerText = token;
 
     // Update retrieved data
@@ -85,7 +87,7 @@ $(document).ready(function() {
                   var image_in_base64 = canvas['toDataURL']('image/png');
 
                   // Emit
-                  socket.emit('message', {'text':txt, 'seg_map':image_in_base64, "code":code, "style":current_style});       
+                  socket.emit('message', {'text':txt, 'seg_map':image_in_base64, "code":code, "style":current_style, "mode":mode});       
                   
                   document.getElementById("chat").value += "You: " + txt + '\n\n';
                   document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
@@ -100,7 +102,7 @@ $(document).ready(function() {
 
     function change_style(style_id) {
         // Emit
-        socket.emit('change_style', {'style':style_id, 'seg_map':canvas['toDataURL']('image/png'), "code":code}); 
+        socket.emit('change_style', {'style':style_id, 'seg_map':canvas['toDataURL']('image/png'), "code":code, "emit":mode}); 
         current_style = style_id;      
     };
 
@@ -116,6 +118,7 @@ $(document).ready(function() {
     document.getElementById("example9").addEventListener('click', function(){change_style("9");});
     document.getElementById("example10").addEventListener('click', function(){change_style("10");});
     document.getElementById("render").addEventListener('click', function(){change_style(current_style);});
+    document.getElementById("render_2").addEventListener('click', function(){change_style(current_style);});
   });
 </script>
 
@@ -211,7 +214,27 @@ $(document).ready(function() {
 <input type="checkbox" id="myCheck" value=0 style="width:0px;height:0px;" onclick="toggleCheckbox()">
 <canvas id="output2k"></canvas>
 
+<button id="render_2" style="margin: 30px; background-color: red; color: white; font-size: 30px; width: 512px; height: 300;">Click me to convert image!!!</button>
 
+<p style="margin: 30px;">
+* Please read the instructions sent to you in the chat below
+</p>
+
+<p style="margin: 30px;">
+* Draw the image to the best of your ability
+</p>
+
+<p style="margin: 30px;">
+* Click the big red button above that says "Click me to convert image!!!"
+</p>
+
+<p style="margin: 30px;">
+* Respond to the instruction
+</p>
+
+<p style="margin: 30px;">
+  * Repeat until the MTurk token appears AT THE VERY BOTTOM OF THIS PAGE (The task should only take about 1 to 2 minutes max)
+</p>
 
 <!-- Javascript -->
 <!-- <script src="{{ url_for('static',filename='demo.js')}}"> </script> -->

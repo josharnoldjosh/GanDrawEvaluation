@@ -7,6 +7,7 @@ from enum import Enum
 from PIL import Image
 from random import choice
 import io
+from Helper import *
 
 """
 I've done this a bit weird, where I generate the first response of the Teller, then I store data as
@@ -24,29 +25,20 @@ But this is so the socket io & networking is easier, so when I post process this
 This should be super easy since each image of the turn is literally bundled in the json data.
 """
 
-def path_to_bytes(path, intermediate="target_images"):
-    path_to_try = f"{os.getcwd()}/{intermediate}/{path}"
-    try:
-        image = Image.open(path_to_try)
-        imgByteArr = io.BytesIO()
-        image.save(imgByteArr, format='PNG')        
-        return 'data:image/png;base64,'+ base64.b64encode(imgByteArr.getvalue()).decode('ascii')
-    except:
-        print(path_to_try)
-        return ""
-
 class UserType(Enum):
-    drawer=0
-    teller=1
+    silent_drawer=0
+    silent_teller=1
+    talkative_drawer=2
+    talkative_teller=3
 
-class TellerBot:
-
+class SilentTellerBot:
+    
     @classmethod
     def first_utterance(cls, data):
         return "There is a mountain in the background"
 
     @classmethod
-    def speak(cls, convo_id):
+    def speak(cls, image, convo_id):
         data = Store.load_data(convo_id)
         num_turns = len(data['dialog'])
         turns = ["There is some grass in the foreground", "Add a small pond in the middle", "add some trees in the background", "its currently sunset at the moment"]
@@ -55,7 +47,23 @@ class TellerBot:
         except:
             return "okay, I think we're done"
 
-class DrawerBot:
+class TalkativeTellerBot:
+    
+    @classmethod
+    def first_utterance(cls, data):
+        return "There is a mountain in the background"
+
+    @classmethod
+    def speak(cls, image, convo_id):
+        data = Store.load_data(convo_id)
+        num_turns = len(data['dialog'])
+        turns = ["There is some grass in the foreground", "Add a small pond in the middle", "add some trees in the background", "its currently sunset at the moment"]
+        try:
+            return turns[num_turns]
+        except:
+            return "okay, I think we're done"            
+
+class SilentDrawerBot:
     @classmethod
     def speak(cls, convo_id):
         data = Store.load_data(convo_id)
@@ -66,8 +74,30 @@ class DrawerBot:
         except:
             return "okay, I think we're done"
 
-class GameSelector:
+    @classmethod
+    def peek(cls, convo_id):
+        return
+        # return the peek image...?
 
+class TalkativeDrawerBot:
+    @classmethod
+    def speak(cls, convo_id):
+        data = Store.load_data(convo_id)
+        num_turns = len(data['dialog'])
+        turns = ["Okay, next instruction please.", "I just drew it. What's next?"]
+        try:
+            return turns[num_turns]
+        except:
+            return "okay, I think we're done"          
+
+    @classmethod
+    def peek(cls, convo_id):
+        return
+        # return the peek image...?
+
+
+class GameSelector:
+    
     @classmethod
     def target_image(cls):
         path = os.path.join(os.getcwd(), "target_images/")
@@ -80,8 +110,10 @@ class GameSelector:
         if GameSelector.game_exists(convo_id): return 
         data = Store.load_data(convo_id)
         data['user_type'] = user_type.value
-        if user_type == user_type.drawer:
-            data['first_bot_utt'] = TellerBot.first_utterance(data)
+        if user_type == UserType.talkative_drawer:
+            data['first_bot_utt'] = TalkativeTellerBot.first_utterance(data)
+        elif user_type == UserType.silent_drawer:
+            data['first_bot_utt'] = SilentTellerBot.first_utterance(data)
         Store.save_data(convo_id, data)
 
     @classmethod
@@ -92,7 +124,8 @@ class GameSelector:
     def can_submit(cls, convo_id):
         data = Store.load_data(convo_id)
         num_turns = len(data['dialog'])
-        if data['user_type'] == UserType.teller.value: return num_turns >= 2
+        if data['user_type'] == UserType.silent_teller.value or data['user_type'] == UserType.talkative_teller.value:
+            return num_turns >= 2
         return num_turns >= 4
 
     @classmethod
@@ -153,7 +186,8 @@ class Store:
     def get_dialog(cls, convo_id):
         data = Store.load_data(convo_id)
         other_user = "Teller"
-        if data['user_type'] == UserType.teller.value: other_user = "Drawer"
+        if data['user_type'] == UserType.talkative_teller.value or data['user_type'] == UserType.silent_teller.value:
+            other_user = "Drawer"
         text = f"{data['first_bot_utt']}\n\n" + "\n\n".join([f"You: {x['user']}\n\n{other_user}: {x['bot']}" for x in data["dialog"]]) + "\n\n"
         return text.strip()+"\n\n"
 

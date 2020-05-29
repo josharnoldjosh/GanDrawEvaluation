@@ -21,6 +21,8 @@
             var peek_image = "{{peek_image}}";    
             var most_recent_dialog = `{{dialog}}`;
             var token = "{{token}}";
+            var mode = "{{mode}}";
+
             document.getElementById("token").innerText = token;
         
             // Update retrieved data
@@ -34,7 +36,7 @@
             console.log(button);
 
             button.onclick = function() {
-              socket.emit('peek', {"code":code});   
+              socket.emit('peek', {"code":code, "mode":mode});   
             };
         
             // Data recieved
@@ -69,9 +71,8 @@
                       if (txt.length < 250 && txt.length > 2) {
         
                           document.getElementById('textfield_input').value = "";
-             
-                          // Emit
-                          socket.emit('teller_message', {'text':txt, "code":code});       
+                                       
+                          socket.emit('teller_message', {'text':txt, "code":code, "mode":mode});       
                           
                           document.getElementById("chat").value += "You: " + txt + '\n\n';
                           document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
