@@ -2,10 +2,13 @@ import os
 from PIL import Image
 import base64
 import io
+<<<<<<< HEAD
 import json
 import cv2
 import numpy as np
 import re
+=======
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
 
 def path_to_bytes(path, intermediate="target_images"):
     path_to_try = f"{os.getcwd()}/{intermediate}/{path}"
@@ -16,6 +19,7 @@ def path_to_bytes(path, intermediate="target_images"):
         return 'data:image/png;base64,'+ base64.b64encode(imgByteArr.getvalue()).decode('ascii')
     except:
         print(path_to_try)
+<<<<<<< HEAD
         return ""
         
 def byte_string_to_cv2(base64_string):            
@@ -30,3 +34,6 @@ def get_cfg(config_file):
         cfg = json.load(f)
     cfg = easydict.EasyDict(cfg)
     return cfg
+=======
+        return ""
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c

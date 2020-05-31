@@ -11,6 +11,7 @@ from PIL import Image
 from random import choice
 import io
 from Helper import *
+<<<<<<< HEAD
 
 import torch
 from torch.utils.data import DataLoader
@@ -43,6 +44,8 @@ import torch.nn as nn
 from torch.nn.utils.rnn import pack_padded_sequence
 from torchvision import transforms
 from teller_utils import UnNormalize
+=======
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
 
 """
 I've done this a bit weird, where I generate the first response of the Teller, then I store data as
@@ -65,6 +68,7 @@ class UserType(Enum):
     silent_teller=1
     talkative_drawer=2
     talkative_teller=3
+<<<<<<< HEAD
 
 class ModelMode(Enum):
     talkative=0
@@ -107,6 +111,14 @@ class TellerBot():
         self.word2index = {k: v for v, k in enumerate(self.vocab)}
         self.index2word = {v: k for v, k in enumerate(self.vocab)}
         self.previous_output_utt = None
+=======
+
+class SilentTellerBot:
+    
+    @classmethod
+    def first_utterance(cls, data):
+        return "There is a mountain in the background"
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
 
     def load_img(self, input_img, resize_wh=128):
         r"""
@@ -189,7 +201,7 @@ class TellerBot():
         
 class SilentDrawerBot:
     @classmethod
-    def speak(cls, convo_id):
+    def speak(cls, image, convo_id):
         data = Store.load_data(convo_id)
         num_turns = len(data['dialog'])
         turns = ["Okay, next instruction please.", "I just drew it. What's next?"]
@@ -198,11 +210,52 @@ class SilentDrawerBot:
         except:
             return "okay, I think we're done"
 
+<<<<<<< HEAD
     @classmethod
     def peek(cls, convo_id):
         return
         # return the peek image...?
 
+class TalkativeDrawerBot:
+=======
+class TalkativeTellerBot:
+    
+    @classmethod
+    def first_utterance(cls, data):
+        return "There is a mountain in the background"
+
+    @classmethod
+    def speak(cls, image, convo_id):
+        data = Store.load_data(convo_id)
+        num_turns = len(data['dialog'])
+        turns = ["There is some grass in the foreground", "Add a small pond in the middle", "add some trees in the background", "its currently sunset at the moment"]
+        try:
+            return turns[num_turns]
+        except:
+            return "okay, I think we're done"            
+
+class SilentDrawerBot:
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
+    @classmethod
+    def speak(cls, convo_id):
+        data = Store.load_data(convo_id)
+        num_turns = len(data['dialog'])
+        turns = ["Okay, next instruction please.", "I just drew it. What's next?"]
+        try:
+            return turns[num_turns]
+        except:
+            return "okay, I think we're done"          
+
+    @classmethod
+    def peek(cls, convo_id):
+        return
+        # return the peek image...?
+
+<<<<<<< HEAD
+class GameSelector:
+    
+    #todo update this to select an image 
+=======
 class TalkativeDrawerBot:
     @classmethod
     def speak(cls, convo_id):
@@ -219,9 +272,10 @@ class TalkativeDrawerBot:
         return
         # return the peek image...?
 
+
 class GameSelector:
     
-    #todo update this to select an image 
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
     @classmethod
     def target_image(cls):
         path = os.path.join(os.getcwd(), "target_images/")
@@ -234,6 +288,7 @@ class GameSelector:
         if GameSelector.game_exists(convo_id): return 
         data = Store.load_data(convo_id)
         data['user_type'] = user_type.value
+<<<<<<< HEAD
         data['first_bot_utt'] = ""
         Store.save_data(convo_id, data)
 
@@ -251,6 +306,12 @@ class GameSelector:
         # print("First utterance is:", first_utterance)
         user_type = data['user_type']                
         data['first_bot_utt'] = "Teller: " + first_utterance
+=======
+        if user_type == UserType.talkative_drawer:
+            data['first_bot_utt'] = TalkativeTellerBot.first_utterance(data)
+        elif user_type == UserType.silent_drawer:
+            data['first_bot_utt'] = SilentTellerBot.first_utterance(data)
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
         Store.save_data(convo_id, data)
 
     @classmethod
@@ -262,9 +323,15 @@ class GameSelector:
         data = Store.load_data(convo_id)
         if data["should_finish"] == True: return True
         num_turns = len(data['dialog'])
+<<<<<<< HEAD
         if data['user_type'] == UserType.silent_drawer.value or data['user_type'] == UserType.talkative_drawer.value:
             return num_turns >= 10
         return num_turns >= 10
+=======
+        if data['user_type'] == UserType.silent_teller.value or data['user_type'] == UserType.talkative_teller.value:
+            return num_turns >= 2
+        return num_turns >= 4
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
 
     @classmethod
     def token(cls):
@@ -298,7 +365,11 @@ class Store:
     @classmethod
     def load_data(cls, convo_id):
         target_synth, target_seg = GameSelector.target_image()
+<<<<<<< HEAD
         data = {"convo_id":convo_id, "dialog":[], "target_image":{"synth":target_synth, "seg_map":target_seg, "most_recent_peek_image":""}, "first_bot_utt":"", "token":GameSelector.token(), "num_peeks_left":2, "should_finish":False}                
+=======
+        data = {"convo_id":convo_id, "dialog":[], "target_image":{"synth":target_synth, "seg_map":target_seg, "most_recent_peek_image":""}, "first_bot_utt":"", "token":GameSelector.token(), "num_peeks_left":2}                
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
         if not GameSelector.game_exists(convo_id): return data
         with open(os.path.join(os.getcwd(), "saved_data/", f"{convo_id}.json"), 'r') as file: data = json.load(file)
         return data
@@ -323,9 +394,15 @@ class Store:
     @classmethod
     def get_dialog(cls, convo_id):
         data = Store.load_data(convo_id)
+<<<<<<< HEAD
         other_user = "Drawer"
         if data['user_type'] == UserType.talkative_teller.value or data['user_type'] == UserType.silent_teller.value:
             other_user = "Teller"
+=======
+        other_user = "Teller"
+        if data['user_type'] == UserType.talkative_teller.value or data['user_type'] == UserType.silent_teller.value:
+            other_user = "Drawer"
+>>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
         text = f"{data['first_bot_utt']}\n\n" + "\n\n".join([f"You: {x['user']}\n\n{other_user}: {x['bot']}" for x in data["dialog"]]) + "\n\n"
         return text.strip()+"\n\n"
 
