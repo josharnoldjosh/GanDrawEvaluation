@@ -44,6 +44,8 @@ from torch.nn.utils.rnn import pack_padded_sequence
 from torchvision import transforms
 from teller_utils import UnNormalize
 
+from drawer_utils import _parse_glove
+
 """
 I've done this a bit weird, where I generate the first response of the Teller, then I store data as
 Turn:
@@ -155,6 +157,11 @@ class TellerBot():
         return  output_utt, stop
 
     def first_utterance(self, convo_id):
+
+        data = Store.load_data(convo_id)
+        if data['first_bot_utt'] != "":
+            print("First bot utterance is already set...")
+            return "An error has occured.", False
 
         print("RESETING TELLER!!!")
 
