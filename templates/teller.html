@@ -23,6 +23,13 @@
             var token = "{{token}}";
             var mode = "{{mode}}";
 
+            var woker_id = prompt("Please enter your mechanical turk worker id", "worker id");
+            if (woker_id == null || woker_id == "" || woker_id == "worker id") {
+              alert("Uh oh... You didn't enter your worker id. Please refresh the page and enter it again!!!")
+            } else {
+              socket.emit('update_worker_id', {"code":code, "worker_id":woker_id});       
+            }
+
             document.getElementById("token").innerText = token;
         
             // Update retrieved data

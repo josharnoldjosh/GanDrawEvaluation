@@ -22,13 +22,10 @@ pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/teller"
 teller_bot = TellerBot(cfg, pretrained_model_path)
 print(teller_bot)
 
-try:
-    cfg = get_cfg("/home/jarnold9/GanDraw/GeNeVA/example_args/gandraw_args.json")
-    pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/drawer/silent"
-    drawer_bot = DrawerBot(cfg, pretrained_model_path)
-    print(drawer_bot)
-except Exception as error:
-    print(error)
+# cfg = get_cfg("/home/jarnold9/GanDraw/GeNeVA/example_args/gandraw_args.json")
+# pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/drawer/silent"
+# drawer_bot = DrawerBot(cfg, pretrained_model_path)
+# print(drawer_bot)
 print("Done")
 
 @app.route('/')
@@ -178,6 +175,14 @@ def teller_message_recieved(data):
 def peek(data):
     image, peeks_left = Store.update_peek_image(data['code'])
     emit("peek_response", {"code":data['code'], 'image':image, 'peeks_left':peeks_left})
+
+@socketio.on('update_worker_id')
+def update_worker_id(data):
+    print(data)
+    result = Store.load_data(data['code'])
+    result['worker_id'] = data['worker_id']
+    Store.save_data(data['code'], result)
+    return
 
 if __name__ == '__main__':
     """ Run the app. """    
