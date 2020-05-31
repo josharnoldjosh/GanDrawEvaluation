@@ -11,7 +11,6 @@ from PIL import Image
 from random import choice
 import io
 from Helper import *
-<<<<<<< HEAD
 
 import torch
 from torch.utils.data import DataLoader
@@ -44,8 +43,6 @@ import torch.nn as nn
 from torch.nn.utils.rnn import pack_padded_sequence
 from torchvision import transforms
 from teller_utils import UnNormalize
-=======
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
 
 """
 I've done this a bit weird, where I generate the first response of the Teller, then I store data as
@@ -68,17 +65,17 @@ class UserType(Enum):
     silent_teller=1
     talkative_drawer=2
     talkative_teller=3
-<<<<<<< HEAD
 
-class ModelMode(Enum):
-    talkative=0
-    silent=1    
+class BotMode(Enum):
+    silent=0
+    talkative=1
 
 class TellerBot():
     def __init__(self, cfg, pretrained_model_path=None, iteration=6000):
         self.cfg = cfg
         self.cfg.batch_size = 1
-        self.mode = ModelMode.talkative
+        self.bot_mode = BotMode.silent
+        self.first_utt_called = False
 
         # Load the Dataset
         dataset_path = cfg.test_dataset
@@ -111,14 +108,6 @@ class TellerBot():
         self.word2index = {k: v for v, k in enumerate(self.vocab)}
         self.index2word = {v: k for v, k in enumerate(self.vocab)}
         self.previous_output_utt = None
-=======
-
-class SilentTellerBot:
-    
-    @classmethod
-    def first_utterance(cls, data):
-        return "There is a mountain in the background"
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
 
     def load_img(self, input_img, resize_wh=128):
         r"""
@@ -166,6 +155,12 @@ class SilentTellerBot:
         return  output_utt, stop
 
     def first_utterance(self, convo_id):
+
+        print("RESETING TELLER!!!")
+
+        # if self.first_utt_called:
+            # return "first utterance already called...?", False
+
         #TODO: provide tgt_img to data
         synth, seg_map, peek = Store.target_image_data(convo_id)
         tgt_img = byte_string_to_cv2(synth) #Expected to by a 3D numpy matrix imported using cv2
@@ -177,13 +172,19 @@ class SilentTellerBot:
 
         output_utt = self.generate_utt()
         #generate the utterance
+
+        self.first_utt_called = True
+
         return output_utt
     
     def speak(self, image, convo_id, drawer_utt):
         # print("about to load data")
         data = Store.load_data(convo_id)
-        if self.mode == ModelMode.silent:
+
+        # If silent or not
+        if self.bot_mode == BotMode.silent:
             drawer_utt = random.choice(["Okay",  "Done", "Next"])
+
         # print("Calling generate...")
         output_utt, terminate_dialog =  self.generate_utt(byte_string_to_cv2(image), drawer_utt)
         print("Model:", output_utt, terminate_dialog)
@@ -191,91 +192,138 @@ class SilentTellerBot:
         # print(output_utt)
         data["should_finish"] = terminate_dialog
         Store.save_data(convo_id, data)        
+
         if "<" in output_utt or ">" in output_utt:
-            data["should_finish"] = True
-            Store.save_data(convo_id, data)
             return "okay, I think we're done. please send me one more message to confirm this."
+
         if data["should_finish"] or GameSelector.can_submit(convo_id):
             return "okay, I think we're done"
+
         return output_utt        
         
-class SilentDrawerBot:
-    @classmethod
-    def speak(cls, image, convo_id):
-        data = Store.load_data(convo_id)
-        num_turns = len(data['dialog'])
-        turns = ["Okay, next instruction please.", "I just drew it. What's next?"]
-        try:
-            return turns[num_turns]
-        except:
-            return "okay, I think we're done"
 
-<<<<<<< HEAD
-    @classmethod
-    def peek(cls, convo_id):
-        return
-        # return the peek image...?
+class DrawerBot():
+    def __init__(self, cfg, pretrained_model_path=None, iteration=1000):
+        self.cfg = cfg
+        self.model = INFERENCE_MODELS[cfg.gan_type](cfg)
+        #load the pretrained_model
+        if pretrained_model_path is not None:
+            self.model.load(pretrained_model_path,iteration)
+        
+        self.bot_mode = BotMode.silent
+        self.visualize_batch = 0
+        # Keep all the progress images to be processed.
+        self.visualize_images = []
+        
+        self.default_drawer_utt = ["okay", "done", "next"]
+        self.glove = _parse_glove(keys['glove_gandraw_path'])
+        self.unk_embedding = np.load("/home/jarnold9/GanDraw/GeNeVA/unk_embedding.npy")
+        self.get_background_embedding()
+        self.output_image = None
 
-class TalkativeDrawerBot:
-=======
-class TalkativeTellerBot:
-    
-    @classmethod
-    def first_utterance(cls, data):
-        return "There is a mountain in the background"
+    def get_background_embedding(self):
+        self.background_embedding = np.zeros((self.cfg.img_size, self.cfg.img_size, 22), dtype=np.int32)
+        self.background_embedding[:,:,0] = 1 #Define the background with sky label activated
+        self.background_embedding =  np.expand_dims(self.background_embedding, axis=0)
+        self.background_embedding = self.process_image(self.background_embedding)
+        self.background_embedding = torch.FloatTensor(self.background_embedding)
 
-    @classmethod
-    def speak(cls, image, convo_id):
-        data = Store.load_data(convo_id)
-        num_turns = len(data['dialog'])
-        turns = ["There is some grass in the foreground", "Add a small pond in the middle", "add some trees in the background", "its currently sunset at the moment"]
-        try:
-            return turns[num_turns]
-        except:
-            return "okay, I think we're done"            
+    def generate_im(self, input_text):
+        #TODO: build the function to generate_im
+        with torch.no_grad():
+            current_turn_embedding, current_turn_len = self.utt2embedding(input_text)
+            gen_im = self.model.generate_im(current_turn_embedding, current_turn_len)
+            gen_im = self.post_processing_im(gen_im)
+        return gen_im
 
-class SilentDrawerBot:
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
-    @classmethod
-    def speak(cls, convo_id):
-        data = Store.load_data(convo_id)
-        num_turns = len(data['dialog'])
-        turns = ["Okay, next instruction please.", "I just drew it. What's next?"]
-        try:
-            return turns[num_turns]
-        except:
-            return "okay, I think we're done"          
+    def utt2embedding(self, input_text):
+        #Tokenize the input_text
+        text_tokens = ['<teller>'] + nltk.word_tokenize(input_text)
+        sampled_drawer_utt = ['<drawer>']+nltk.word_tokenize(random.choice(self.default_drawer_utt))
+        text_tokens = text_tokens + sampled_drawer_utt
+        #get padded_input_text
+        processed_text_tokens =  [w for w in text_tokens if w not in string.punctuation]
+        processed_text_len = len(processed_text_tokens)
+        #initialize turn embedding 
+        turn_embeddings = np.zeros((processed_text_len, 300))
+        for i,w in enumerate(processed_text_tokens):
+            turn_embeddings[i] = self.glove.get(w, self.unk_embedding)
+        #turns_embeddings is not a numpy matrix
+        turn_embeddings = np.expand_dims(turn_embeddings, axis=0)
+        turn_lens = np.ones((1))*processed_text_len        
+        return torch.FloatTensor(turn_embeddings), torch.LongTensor(turn_lens)
 
-    @classmethod
-    def peek(cls, convo_id):
-        return
-        # return the peek image...?
+    def reset_drawer(self):
+        self.output_image = None
+        self.model.reset_drawer(self.background_embedding)
+        #self.model.eval()
 
-<<<<<<< HEAD
+    def post_processing_im(self, gen_im,resize_wh=512):
+        dominant_label = np.unique(gen_im)
+        output_image = cv2.resize(gen_im, (resize_wh, resize_wh), interpolation=cv2.INTER_AREA)
+        output_image = self.smooth_segmentation(output_image, dominant_label)
+        return output_image
+
+    def smooth_segmentation(self, image, dominant_label):        
+        """
+        image is the 3D gray scale image with each pixel equal to the label of a certain category.
+        return the same size of shrinked_image with only dominant_label
+        """
+        drawing2landscape = [
+            ([0, 0, 0],156), #sky
+            ([156, 156, 156], 156),#sky
+            ([154, 154, 154], 154), #sea
+            ([134, 134, 134], 134), #mountain
+            ([149, 149, 149], 149), #rock
+            ([126, 126, 126], 126), #hill
+            ([105, 105, 105], 105), #clouds
+            ([14, 14, 14], 14), #sand
+            ([124, 124, 124], 124), #gravel
+            ([158, 158, 158], 158), #snow
+            ([147, 147, 147], 147), #river
+            ([96, 96, 96], 96), #bush
+            ([168, 168, 168], 168), #tree
+            ([148, 148, 148], 148), #road
+            ([110, 110, 110], 110), #dirt 
+            ([135, 135, 135], 135), #mud 
+            ([119, 119, 119], 119), #fog 
+            ([161, 161, 161], 161), #stone
+            ([177, 177, 177], 177), #water
+            ([118, 118, 118], 118), #flower
+            ([123, 123, 123], 123), #grass
+            ([162, 162, 162], 162), #straw
+        ]
+
+        center = []
+        for l in dominant_label:
+            center_array = np.array([l]*3)
+            center.append(np.uint8(center_array))
+        #print(center)
+        for i in range(image.shape[0]):
+            for j in range(image.shape[1]):
+                current_pixel = np.uint8(image[i,j])
+                #sort centers
+
+                if not any(all(current_pixel == x) for x in center):
+                    #print("sort_center")
+                    center.sort(key=lambda c: sqrt((current_pixel[0]-c[0])**2+(current_pixel[1]-c[1])**2+(current_pixel[2]-c[2])**2))
+                    image[i,j] = center[0]
+        #print(image)
+        return image
+        
+    def speak(self, convo_id, teller_utt):
+        data = Store.load_data(convo_id)    
+        #self.drawer_utt = # ...?
+        if self.bot_mode == BotMode.silent:
+            self.drawer_utt = random.choice(self.default_drawer_utt)
+        self.output_image = self.generate_im(teller_utt)
+        return self.drawer_utt, self.output_image
+
+    def peek(self, convo_id):
+        return self.output_image
+
 class GameSelector:
     
-    #todo update this to select an image 
-=======
-class TalkativeDrawerBot:
-    @classmethod
-    def speak(cls, convo_id):
-        data = Store.load_data(convo_id)
-        num_turns = len(data['dialog'])
-        turns = ["Okay, next instruction please.", "I just drew it. What's next?"]
-        try:
-            return turns[num_turns]
-        except:
-            return "okay, I think we're done"          
-
-    @classmethod
-    def peek(cls, convo_id):
-        return
-        # return the peek image...?
-
-
-class GameSelector:
-    
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
     @classmethod
     def target_image(cls):
         path = os.path.join(os.getcwd(), "target_images/")
@@ -288,15 +336,14 @@ class GameSelector:
         if GameSelector.game_exists(convo_id): return 
         data = Store.load_data(convo_id)
         data['user_type'] = user_type.value
-<<<<<<< HEAD
         data['first_bot_utt'] = ""
         Store.save_data(convo_id, data)
 
     @classmethod
     def update_target_image(cls, convo_id, target_image):               
-        data = Store.load_data(convo_id)        
-        data['target_image']['synth'] = target_image+".jpg"
-        data['target_image']['seg_map'] = target_image+"_seg.png"
+        data = Store.load_data(convo_id)
+        data['target_image']['synth'] = target_image + ".jpg"
+        data['target_image']['seg_map'] = target_image + "_seg.png"
         Store.save_data(convo_id, data)        
     
     @classmethod
@@ -306,12 +353,6 @@ class GameSelector:
         # print("First utterance is:", first_utterance)
         user_type = data['user_type']                
         data['first_bot_utt'] = "Teller: " + first_utterance
-=======
-        if user_type == UserType.talkative_drawer:
-            data['first_bot_utt'] = TalkativeTellerBot.first_utterance(data)
-        elif user_type == UserType.silent_drawer:
-            data['first_bot_utt'] = SilentTellerBot.first_utterance(data)
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
         Store.save_data(convo_id, data)
 
     @classmethod
@@ -323,15 +364,9 @@ class GameSelector:
         data = Store.load_data(convo_id)
         if data["should_finish"] == True: return True
         num_turns = len(data['dialog'])
-<<<<<<< HEAD
         if data['user_type'] == UserType.silent_drawer.value or data['user_type'] == UserType.talkative_drawer.value:
             return num_turns >= 10
         return num_turns >= 10
-=======
-        if data['user_type'] == UserType.silent_teller.value or data['user_type'] == UserType.talkative_teller.value:
-            return num_turns >= 2
-        return num_turns >= 4
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
 
     @classmethod
     def token(cls):
@@ -365,11 +400,7 @@ class Store:
     @classmethod
     def load_data(cls, convo_id):
         target_synth, target_seg = GameSelector.target_image()
-<<<<<<< HEAD
         data = {"convo_id":convo_id, "dialog":[], "target_image":{"synth":target_synth, "seg_map":target_seg, "most_recent_peek_image":""}, "first_bot_utt":"", "token":GameSelector.token(), "num_peeks_left":2, "should_finish":False}                
-=======
-        data = {"convo_id":convo_id, "dialog":[], "target_image":{"synth":target_synth, "seg_map":target_seg, "most_recent_peek_image":""}, "first_bot_utt":"", "token":GameSelector.token(), "num_peeks_left":2}                
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
         if not GameSelector.game_exists(convo_id): return data
         with open(os.path.join(os.getcwd(), "saved_data/", f"{convo_id}.json"), 'r') as file: data = json.load(file)
         return data
@@ -394,15 +425,9 @@ class Store:
     @classmethod
     def get_dialog(cls, convo_id):
         data = Store.load_data(convo_id)
-<<<<<<< HEAD
         other_user = "Drawer"
         if data['user_type'] == UserType.talkative_teller.value or data['user_type'] == UserType.silent_teller.value:
             other_user = "Teller"
-=======
-        other_user = "Teller"
-        if data['user_type'] == UserType.talkative_teller.value or data['user_type'] == UserType.silent_teller.value:
-            other_user = "Drawer"
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
         text = f"{data['first_bot_utt']}\n\n" + "\n\n".join([f"You: {x['user']}\n\n{other_user}: {x['bot']}" for x in data["dialog"]]) + "\n\n"
         return text.strip()+"\n\n"
 
