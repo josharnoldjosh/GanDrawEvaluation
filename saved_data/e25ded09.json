@@ -1,0 +1,26 @@
+{
+    "convo_id": "e25ded09",
+    "dialog": [
+        {
+            "user": "there are tall trees, close to the river",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "the sky is very blue",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "in the background there is a mountain covered with snow",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "a24020df.jpg",
+        "seg_map": "a24020df.png",
+        "most_recent_peek_image": ""
+    },
+    "first_bot_utt": "",
+    "token": "c28679c0",
+    "num_peeks_left": 2,
+    "user_type": 1
+}

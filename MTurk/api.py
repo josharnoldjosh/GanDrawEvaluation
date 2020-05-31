@@ -60,19 +60,19 @@ class API:
             json.dump(self.hit_data, file)
 
     def create_hit(self, question):
-        # worker_requirements = [{
-        #     'QualificationTypeId': '00000000000000000071',
-        #     'Comparator': 'EqualTo',            
-        #     'LocaleValues':[{
-        #         'Country':"US"
-        #     }]
-        # }]
+        worker_requirements = [{
+            'QualificationTypeId': '00000000000000000071',
+            'Comparator': 'EqualTo',            
+            'LocaleValues':[{
+                'Country':"US"
+            }]
+        }]
         worker_requirements = []
 
         # Create the HIT
         response = self.client.create_hit(
             MaxAssignments=1,
-            LifetimeInSeconds=7200*12, # How long the hits exist for - 2 hours * 12 = 24 hours
+            LifetimeInSeconds=7200*1, # How long the hits exist for - 2 hours * 1 = 2 hours
             AssignmentDurationInSeconds=1800, # How long you can do each task - 30 minutes
             Reward=config['reward'],
             Title=config['title'],

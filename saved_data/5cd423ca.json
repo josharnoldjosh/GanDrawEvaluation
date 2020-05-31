@@ -1,0 +1,26 @@
+{
+    "convo_id": "5cd423ca",
+    "dialog": [
+        {
+            "user": "test",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "test",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "test",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "ebcbbca0.jpg",
+        "seg_map": "ebcbbca0.png",
+        "most_recent_peek_image": "b021bb77.jpg"
+    },
+    "first_bot_utt": "",
+    "token": "3cc037c0",
+    "num_peeks_left": 0,
+    "user_type": 1
+}

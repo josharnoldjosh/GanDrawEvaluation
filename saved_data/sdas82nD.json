@@ -1,0 +1,35 @@
+{
+    "convo_id": "sdas82nD",
+    "dialog": [
+        {
+            "user": "hello world",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "add some mountain",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "cool",
+            "bot": "okay, i think were done"
+        },
+        {
+            "user": "cool!",
+            "bot": "okay, i think were done"
+        },
+        {
+            "user": "nice!",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "fb0f401f.jpg",
+        "seg_map": "fb0f401f.png",
+        "most_recent_peek_image": "cefe5a81.jpg"
+    },
+    "first_bot_utt": "",
+    "token": "c6742e0d",
+    "num_peeks_left": 0,
+    "should_finish": false,
+    "user_type": 2
+}

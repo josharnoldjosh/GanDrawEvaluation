@@ -1,0 +1,14 @@
+{
+    "convo_id": "832nda",
+    "dialog": [],
+    "target_image": {
+        "synth": "041314fc.jpg",
+        "seg_map": "041314fc.png",
+        "most_recent_peek_image": ""
+    },
+    "first_bot_utt": "Teller: there is a river that takes up about one third of the image the other way down the way point to the right side of the screen it has some grass on the left side of the river",
+    "token": "e29a3190",
+    "num_peeks_left": 2,
+    "should_finish": false,
+    "user_type": 1
+}

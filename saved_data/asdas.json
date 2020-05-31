@@ -1,0 +1,26 @@
+{
+    "convo_id": "asdas",
+    "dialog": [
+        {
+            "user": "sdfs",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "nice!",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "done",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "085f6883.jpg",
+        "seg_map": "085f6883.png",
+        "most_recent_peek_image": "08d1d98c.jpg"
+    },
+    "first_bot_utt": "",
+    "token": "eeee49c7",
+    "num_peeks_left": 0,
+    "user_type": 1
+}

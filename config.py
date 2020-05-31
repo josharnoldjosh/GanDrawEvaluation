@@ -1,3 +1,3 @@
 config = {
-    'secure_connection_enabled':False
+    'secure_connection_enabled':True
 }

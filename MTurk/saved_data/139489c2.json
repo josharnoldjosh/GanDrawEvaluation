@@ -1,0 +1,11 @@
+{
+    "convo_id": "139489c2",
+    "dialog": [],
+    "target_image": {
+        "synth": "3289994f.jpg",
+        "seg_map": "3289994f.png"
+    },
+    "first_bot_utt": "There is a mountain in the background",
+    "token": "1f4a4311",
+    "user_type": 0
+}

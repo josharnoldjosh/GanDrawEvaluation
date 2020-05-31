@@ -11,18 +11,33 @@
     <script>
         var socket;
         $(document).ready(function() {
-            socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port);
+
+            socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port, {path: "/visualchatsocket"});
+            // socket = io.connect('{{prefix}}://' + document.domain + ':' + location.port);
             
             var code = "{{code}}";
             var most_recent_synth = "{{synth}}";    
+            var semantic_image = "{{seg_map}}";    
+            var peek_image = "{{peek_image}}";    
             var most_recent_dialog = `{{dialog}}`;
             var token = "{{token}}";
+            var mode = "{{mode}}";
+
             document.getElementById("token").innerText = token;
         
             // Update retrieved data
             document.getElementById("chat").value = most_recent_dialog;
             document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
             document.getElementById('target_image').src = most_recent_synth;
+            document.getElementById('semantic_image').src = semantic_image;
+            document.getElementById('peek_image').src = peek_image;
+
+            var button = document.getElementById('peek_button');    
+            console.log(button);
+
+            button.onclick = function() {
+              socket.emit('peek', {"code":code, "mode":mode});   
+            };
         
             // Data recieved
             socket.on('response', function(data) {
@@ -33,6 +48,20 @@
                 document.getElementById("token").innerText = token;
             });
         
+            // Data recieved
+            var already_peeked = false;
+            socket.on('peek_response', function(data) {
+                if (data['code'] != code) return;
+                document.getElementById('peek_image').src = data['image'];
+                if (already_peeked) {
+                  alert("Sorry! No more peeks left.");
+                }
+                if (data['peeks_left'] == 0) {
+                    already_peeked = true;                    
+                }
+            });
+        
+
              // Enter key pressed - send data
              const node = document.getElementsByClassName("textfield")[0];
               node.addEventListener("keyup", function(event) {
@@ -42,9 +71,8 @@
                       if (txt.length < 250 && txt.length > 2) {
         
                           document.getElementById('textfield_input').value = "";
-             
-                          // Emit
-                          socket.emit('teller_message', {'text':txt, "code":code});       
+                                       
+                          socket.emit('teller_message', {'text':txt, "code":code, "mode":mode});       
                           
                           document.getElementById("chat").value += "You: " + txt + '\n\n';
                           document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
@@ -62,32 +90,36 @@
   <body>
   <section class="section">
     <div class="container">
+
       <h1 class="title">
         MTurk Task
       </h1>
+
+      <p>Instructions: Please describe the image (the one that looks realistic) sequentially. For example, "There is a mountain in the background", then you could also say after the user replies, "Next, add some trees in the background".
+        You can use the "peek" button to see what the user has drawn thus far. After you send 4 messages, the token to submit on MTurk will appear bellow.</p>
       
-      <div style="display: flex; justify-content: center; align-items: center; align-content: center; flex-direction: row; flex-wrap: wrap;">
+        <div style="display: flex; justify-content: center; align-items: center; align-content: center; flex-direction: row; flex-wrap: wrap;">
 
-        <div id="chatbox" style="width: 100%; display: flex; flex-direction: column; align-content: flex-start; align-items: flex-start;">
-            <textarea id="chat" style="width: 1000px; margin: 20px; height: 350px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 15px;"></textarea>      
-            <div style="display: flex; justify-content: center; align-items: center; align-content: center;">
-            <b style="height: 25px; margin: 20px;">Enter text HERE & press enter to send:</b>
-            <input type="text" id="textfield_input" class="textfield" style="width: 347px; background-color: beige;">     
-            </div>
+          <div id="chatbox" style="width: 100%; display: flex; flex-direction: column; align-content: flex-start; align-items: flex-start;">
+              <textarea id="chat" style="width: 1000px; margin: 20px; height: 350px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 15px;"></textarea>      
+              <div style="display: flex; justify-content: center; align-items: center; align-content: center;">
+              <b style="height: 25px; margin: 20px;">Enter text HERE & press enter to send:</b>
+              <input type="text" id="textfield_input" class="textfield" style="width: 347px; background-color: beige;">     
+              </div>
 
-            <div style="display: flex; justify-content: center; align-items: center; align-content: center; flex-direction: row;">
-              <img style="width: 350px; height: 350px; margin: 10px;" id='target_image'>
-              <img style="width: 350px; height: 350px; margin: 10px; background-color: beige;" id='peak_image'>
-              <button class="button is-primary" id="peak_button" style="margin: 20px;">Peak Image</button>
-            </div>
+              <div style="display: flex; justify-content: center; align-items: center; align-content: center; flex-direction: row;">
+                <img style="width: 350px; height: 350px; margin: 10px;" id='target_image'>
+                <img style="width: 350px; height: 350px; margin: 10px; background-color: beige;" id='semantic_image'> 
+                <img style="width: 350px; height: 350px; margin: 10px; background-color: beige;" id='peek_image'> 
+                <button class="button is-primary" id="peek_button" style="margin: 20px;">Peek</button>
+              </div>
 
-            <div style="display: flex; justify-content: center; align-items: center; align-content: center; flex-direction: row;">
-            <b style="font-size: 25px; margin: 20px;">Token to submit on MTurk will appear here: </b> <p id="token" style="font-size: 25px; color: red; margin: 0px;"></p>
-            </div>
-        </div>        
-
-      </div>
-
+              <div style="display: flex; justify-content: center; align-items: center; align-content: center; flex-direction: row;">
+                <b style="font-size: 25px; margin: 20px;">Token to submit on MTurk will appear here: </b> <p id="token" style="font-size: 25px; color: red; margin: 0px;"></p>
+              </div>
+          </div>
+           
+        </div>
     </div>
   </section>
   </body>

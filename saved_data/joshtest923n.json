@@ -1,0 +1,26 @@
+{
+    "convo_id": "joshtest923n",
+    "dialog": [
+        {
+            "user": "hello world",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "testing...",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "were done",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "bda858a1.jpg",
+        "seg_map": "bda858a1.png",
+        "most_recent_peek_image": "2e98bdc9.jpg"
+    },
+    "first_bot_utt": "",
+    "token": "b8e8c982",
+    "num_peeks_left": 0,
+    "user_type": 1
+}

@@ -1,0 +1,14 @@
+{
+    "convo_id": "xx88nwdoasd",
+    "dialog": [],
+    "target_image": {
+        "synth": "64e56d94.jpg",
+        "seg_map": "64e56d94.png",
+        "most_recent_peek_image": ""
+    },
+    "first_bot_utt": "fill the bottom half with rock",
+    "token": "5c0d04c3",
+    "num_peeks_left": 2,
+    "should_finish": false,
+    "user_type": 1
+}

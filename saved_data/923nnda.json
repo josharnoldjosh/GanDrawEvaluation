@@ -1,0 +1,14 @@
+{
+    "convo_id": "923nnda",
+    "dialog": [],
+    "target_image": {
+        "synth": "e1efcad3.jpg",
+        "seg_map": "e1efcad3.png",
+        "most_recent_peek_image": ""
+    },
+    "first_bot_utt": "",
+    "token": "f757f0f0",
+    "num_peeks_left": 2,
+    "should_finish": false,
+    "user_type": 1
+}

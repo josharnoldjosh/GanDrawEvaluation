@@ -1,0 +1,14 @@
+{
+    "convo_id": "sdas9923n",
+    "dialog": [],
+    "target_image": {
+        "synth": "fcff8c7e.jpg",
+        "seg_map": "fcff8c7e.png",
+        "most_recent_peek_image": ""
+    },
+    "first_bot_utt": "",
+    "token": "e1d4826d",
+    "num_peeks_left": 2,
+    "should_finish": false,
+    "user_type": 1
+}

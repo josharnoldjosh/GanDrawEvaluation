@@ -1,0 +1,26 @@
+{
+    "convo_id": "a7ca0fa4",
+    "dialog": [
+        {
+            "user": "mountain view",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "appalachia",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "cloudy mountains and forests",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "3a278c18.jpg",
+        "seg_map": "3a278c18.png",
+        "most_recent_peek_image": ""
+    },
+    "first_bot_utt": "",
+    "token": "35d565e1",
+    "num_peeks_left": 2,
+    "user_type": 1
+}

@@ -1,0 +1,19 @@
+{
+    "convo_id": "832ndaxxsdn",
+    "dialog": [
+        {
+            "user": "hello world",
+            "bot": "okay, next instruction please."
+        }
+    ],
+    "target_image": {
+        "synth": "009b2b81.jpg",
+        "seg_map": "009b2b81.png",
+        "most_recent_peek_image": "2279d456.jpg"
+    },
+    "first_bot_utt": "",
+    "token": "5992d25b",
+    "num_peeks_left": 1,
+    "should_finish": false,
+    "user_type": 0
+}

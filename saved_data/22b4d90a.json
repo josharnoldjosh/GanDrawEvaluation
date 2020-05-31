@@ -1,0 +1,26 @@
+{
+    "convo_id": "22b4d90a",
+    "dialog": [
+        {
+            "user": "there are some trees in the background",
+            "bot": "okay, next instruction please."
+        },
+        {
+            "user": "there is a pond in the middle",
+            "bot": "i just drew it. whats next?"
+        },
+        {
+            "user": "nothing else",
+            "bot": "okay, i think were done"
+        }
+    ],
+    "target_image": {
+        "synth": "3403ddc3.jpg",
+        "seg_map": "3403ddc3.png",
+        "most_recent_peek_image": "2c2f1a72.jpg"
+    },
+    "first_bot_utt": "",
+    "token": "9e9defda",
+    "num_peeks_left": 0,
+    "user_type": 1
+}
