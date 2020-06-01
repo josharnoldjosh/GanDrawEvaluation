@@ -1,3 +1,7 @@
+saved_data/*
+score_analysis/*
+target_images/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

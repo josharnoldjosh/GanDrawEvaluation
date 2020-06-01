@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session
 from flask_socketio import SocketIO, emit
 from PIL import Image
-from store import Store, GameSelector, TellerBot, UserType, DrawerBot
+from store import Store, GameSelector, UserType
 import io
 import base64
 from api import segmap_to_real
@@ -34,16 +34,20 @@ def prev_id():
 
 def id_to_data(convo_id):    
     user = Store.user_type(convo_id)
-    if user == UserType.silent_teller.value or user == UserType.talkative_teller.value:
-        pay_load = {'user_type':'drawer'}
-        pay_load['dialog'] = Store.get_dialog(convo_id).replace("\n", "<br>")
-        pay_load['image_data'] = Store.get_image_data(convo_id)
-        return pay_load        
-    elif user == UserType.silent_drawer.value or user == UserType.talkative_drawer.value:
-        pay_load = {'user_type':'teller'}
-        pay_load['dialog'] = Store.get_dialog(convo_id).replace("\n", "<br>")          
-        return pay_load
-    return {}
+    pay_load = {'user_type':'drawer'}
+    pay_load['dialog'] = Store.get_dialog(convo_id).replace("\n", "<br>")
+    pay_load['image_data'] = Store.get_image_data(convo_id)
+    return pay_load
+    # if user == UserType.silent_teller.value or user == UserType.talkative_teller.value:
+    #     pay_load = {'user_type':'drawer'}
+    #     pay_load['dialog'] = Store.get_dialog(convo_id).replace("\n", "<br>")
+    #     pay_load['image_data'] = Store.get_image_data(convo_id)
+    #     return pay_load        
+    # elif user == UserType.silent_drawer.value or user == UserType.talkative_drawer.value:
+    #     pay_load = {'user_type':'teller'}
+    #     pay_load['dialog'] = Store.get_dialog(convo_id).replace("\n", "<br>")          
+    #     return pay_load
+    # return {}
 
 @app.route('/')
 def root():

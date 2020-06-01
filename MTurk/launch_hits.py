@@ -10,8 +10,8 @@ api = API()
 # api.clear_hit_data()
 
 # Define Task Type
-bot_type = 'teller'
-user_type = 'drawer'
+bot_type = 'drawer'
+user_type = 'teller'
 
 # Target images
 target_images = [x.split(".")[0] for x in os.listdir("target_image_eval/") if ".jpg" in x]
