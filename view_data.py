@@ -34,12 +34,12 @@ def prev_id():
 
 def id_to_data(convo_id):    
     user = Store.user_type(convo_id)
-    if user == UserType.drawer.value:
+    if user == UserType.silent_teller.value or user == UserType.talkative_teller.value:
         pay_load = {'user_type':'drawer'}
         pay_load['dialog'] = Store.get_dialog(convo_id).replace("\n", "<br>")
         pay_load['image_data'] = Store.get_image_data(convo_id)
         return pay_load        
-    elif user == UserType.teller.value:
+    elif user == UserType.silent_drawer.value or user == UserType.talkative_drawer.value:
         pay_load = {'user_type':'teller'}
         pay_load['dialog'] = Store.get_dialog(convo_id).replace("\n", "<br>")          
         return pay_load

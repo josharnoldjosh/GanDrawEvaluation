@@ -26,17 +26,21 @@ from pathlib import Path
 import cv2
 import glob
 
-from geneva.models.models import INFERENCE_MODELS
-from geneva.data.datasets import DATASETS
-from geneva.evaluation.evaluate import Evaluator
-from geneva.utils.config import keys, parse_config
-from geneva.utils.visualize import VisdomPlotter
-from geneva.models.models import MODELS
-from geneva.data import codraw_dataset
-from geneva.data import clevr_dataset
-from geneva.data import gandraw_dataset
-from geneva.evaluation.seg_scene_similarity_score import report_gandraw_eval_result
-from geneva.utils.config import keys
+try:
+    from geneva.models.models import INFERENCE_MODELS
+    from geneva.data.datasets import DATASETS
+    from geneva.evaluation.evaluate import Evaluator
+    from geneva.utils.config import keys, parse_config
+    from geneva.utils.visualize import VisdomPlotter
+    from geneva.models.models import MODELS
+    from geneva.data import codraw_dataset
+    from geneva.data import clevr_dataset
+    from geneva.data import gandraw_dataset
+    from geneva.evaluation.seg_scene_similarity_score import report_gandraw_eval_result
+    from geneva.utils.config import keys
+except:
+    print("Failed to load geneva")
+
 from math import sqrt
 
 import torch.nn as nn
@@ -441,7 +445,12 @@ class Store:
     @classmethod
     def get_image_data(cls, convo_id):
         data = Store.load_data(convo_id)
-        return [turn['synth'] for turn in data['dialog']]
+        return [turn['synth'] for turn in data['dialog']] 
+
+    @classmethod
+    def get_seg_data(cls, convo_id):
+        data = Store.load_data(convo_id)
+        return [turn['seg_map'] for turn in data['dialog']]            
             
     @classmethod
     def current_image_data(cls, convo_id):

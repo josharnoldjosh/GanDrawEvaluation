@@ -13,9 +13,8 @@
         <form name='mturk_form' method='post' id='mturk_form' action='https://www.mturk.com/mturk/externalSubmit'>
             <input type='hidden' value='' name='assignmentId' id='assignmentId'/>
 
-<<<<<<< HEAD
             <h1>Please visit the external links, complete the task, and paste the codes here to submit the hit. Don't worry, it will only take 5 minutes max!</h1>
-            <p>Your goal is to draw whatever the other user says until your code appears and paste it back here. This should be a really really easy task, IT SHOULD ONLY TAKE FIVE MINUTES! THERE ARE NO WRONG ANSWERS! Just send some logical messags! And try to draw the best you can, but its okay if it doesn't look perfect! :) </p>
+            <p>Your goal is to draw whatever the other user says until your code appears and paste it back here.</p>
 
             <div style="display: flex; margin: 30px;">
                 <div style="margin-left: 50px;">                    
@@ -25,7 +24,7 @@
                     <label for="silent_token">Token:</label>
                     <input type="text" id="silent_token" name="silent_token"><br><br>
 
-                    <p>For this link, please be as talkative and verbose as possible and ask many questions:</p>
+                    <p>For this link, please be and don't be afraid to ask questions here:</p>
                     <p class="well" id="talkative_task_link_id">${talkative_task_link}</p> 
                     <label for="talkative_token">Token:</label>
                     <input type="text" id="talkative_token" name="talkative_token"><br><br>
@@ -34,20 +33,6 @@
             
             <input type="text" id="silent_token_link_id" name="silent_token_link_id" style="visibility: hidden;"><br>
             <input type="text" id="talkative_token_link_id" name="talkative_token_link_id" style="visibility: hidden;"><br>
-=======
-            <h1>Please visit the external link, complete the task, and paste the code here to submit the hit.</h1>
-            <p>Your goal is to draw whatever the other user says until your code appears and paste it back here. This should be a really really easy task, IT SHOULD ONLY TAKE ONE MINUTE! THERE ARE NO WRONG ANSWERS! Just send some logical messags! And try to draw the best you can, but its okay if it doesn't look perfect! :) </p>
-
-            <div style="display: flex; margin: 30px;">
-                <div style="margin-left: 50px;">                    
-                    <p class="well" id="task_link_id">${task_link}</p> 
-                    <label for="token">Token:</label>
-                    <input type="text" id="token" name="token"><br><br>
-                </div>
-            </div>
-            
-            <input type="text" id="token_link_id" name="token_link_id" style="visibility: hidden;"><br>
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
 
             <p style=" margin: 30px;"><input type='submit' id='submitButton' value='Submit' /></p>
 
@@ -56,12 +41,8 @@
     </body>
 
     <script>
-<<<<<<< HEAD
         document.getElementById("silent_token_link_id").value = document.getElementById("silent_token_link_id").innerText;
         document.getElementById("talkative_token_link_id").value = document.getElementById("talkative_token_link_id").innerText;
-=======
-        document.getElementById("token_link_id").value = document.getElementById("task_link_id").innerText ;
->>>>>>> 610c80f7d4064c26c49564b801231a86ff2edd5c
     </script>
 </html>
 

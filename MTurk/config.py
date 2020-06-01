@@ -1,8 +1,8 @@
 config = {
-    'live': False,                                      
-    'reward': '0.05', 
+    'live': True,                                      
+    'reward': '0.30', 
     'bonus': '0.01',                                   
-    'title': "Fun Drawing/Chatting Task with A.I. Bot SUPER EASY, 1 MINUTE TASK. NO WRONG ANSWERS! :)",
+    'title': "Fun Drawing/Chatting Task with A.I. Bot 5 MINUTE TASK. NO WRONG ANSWERS, JUST TRY YOUR BEST! :)",
     'keywords': "chat, draw, a.i., fun",
     'description': 'Chat with an AI bot',      
     'num_hits': 1                                                  
@@ -18,9 +18,9 @@ config = {
 
 credentials = {
     "Credentials": {
-        "AccessKeyId": "",
-        "SecretAccessKey": "",
-        "SessionToken": "",
-        "Expiration": ""
+        "AccessKeyId": "ASIA3FHUYW2PPCJJJGEG",
+        "SecretAccessKey": "DHwmqQCZzrkPU+WOCfyO/o7aPppWENeJG/0ihGAc",
+        "SessionToken": "FwoGZXIvYXdzEOL//////////wEaDOVxYL203PRe2fh64yJqH43ie/EdNYCnlioMUgpE/WPa0ens9atWTdLEyPAVp0oKzOFiO9m/Y35kw2/GmspXVVFLs4Ommskz9fuHXWcgs1XGPBLk+P7M6Ttaj7d3fSt7efSbTzL4VR/MIa+B+Cv4+m7/aoTDfTgXfiiBl9H2BTIo7Dxv+7pqlyMcfjvjHgeVYgwkbrK0a62izMRCD//91kuodUZKuFIY0A==",
+        "Expiration": "2020-06-01T01:27:45+00:00"
     }
 }
