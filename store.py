@@ -369,6 +369,10 @@ class TalkativeDrawerBot():
         self.vocab = ['<s_start>', '<s_end>', '<unk>', '<pad>', '<d_end>'] + gandraw_vocab        
         self.cfg.vocab_size = len(self.vocab)
 
+        self.word2index = {k: v for v, k in enumerate(self.vocab)}
+        self.index2word = {v: k for v, k in enumerate(self.vocab)}
+        self.previous_output_utt = None
+
         self.model = INFERENCE_MODELS[cfg.gan_type](cfg)
         #load the pretrained_model
         if pretrained_model_path is not None:
@@ -386,6 +390,9 @@ class TalkativeDrawerBot():
         self.get_background_embedding()
         self.output_image = None
         self.reset_drawer()
+
+
+
     def get_background_embedding(self):
         self.background_embedding = np.zeros((self.cfg.img_size, self.cfg.img_size, 22), dtype=np.int32)
         self.background_embedding[:,:,0] = 1 #Define the background with sky label activated
@@ -572,8 +579,8 @@ class GameSelector:
         if data["should_finish"] == True: return True
         num_turns = len(data['dialog'])
         if data['user_type'] == UserType.silent_drawer.value or data['user_type'] == UserType.talkative_drawer.value:
-            return num_turns >= 10
-        return num_turns >= 10
+            return num_turns >= 4
+        return num_turns >= 4
 
     @classmethod
     def token(cls):
@@ -597,7 +604,12 @@ class Store:
         elif not seg_map or not synth or not style:
             data["dialog"].append({"user":Store.preprocess_string(user_utt), "bot":Store.preprocess_string(bot_utt)})                    
         else:    
-            if not success: synth = data['dialog'][-1]['synth']            
+            if not success:
+                try:
+                    synth = data['dialog'][-1]['synth']            
+                except:
+                    synth = "..."
+                    success = False
             data["dialog"].append({"user":Store.preprocess_string(user_utt), "bot":Store.preprocess_string(bot_utt), "seg_map":seg_map, "synth":synth, "style":style, "success":success})            
         Store.save_data(convo_id, data)
 
@@ -672,7 +684,7 @@ class Store:
     def update_peek_image(cls, convo_id):        
         data = Store.load_data(convo_id)
         if data['num_peeks_left'] == 0: return path_to_bytes(data['target_image']['most_recent_peek_image'], 'image_data'), data['num_peeks_left']
-                
+
         data['target_image']['most_recent_peek_image'] = data['dialog'][-1]['synth']
 
         data['num_peeks_left'] = data['num_peeks_left'] - 1

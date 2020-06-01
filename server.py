@@ -46,7 +46,7 @@ def talkative_drawer(convo_id, target_image):
     GameSelector.update_target_image(convo_id, target_image)   
     current_convo = Store.get_dialog(convo_id)
     if current_convo.strip() == "":
-        drawer_bot.reset_drawer() # we reset if its a fresh convo
+        talkative_drawer_bot.reset_drawer() # we reset if its a fresh convo
         print("RESETTING!!!")
     else:
         print("REUSING!!!!")
@@ -185,7 +185,15 @@ def teller_message_recieved(data):
     if GameSelector.can_submit(code): token = Store.token(code) 
 
     if mode == "talkative":
-        output_text = TalkativeDrawerBot.speak(code)
+        output_text, output_image = talkative_drawer_bot.speak(code, user_txt)
+        seg_map = cv2_to_base64(output_image)
+        synth, success = quick_convert(seg_map)
+        if not success:
+            sleep(1)
+            synth, success = quick_convert(seg_map)
+            if not success:
+                sleep(2)
+                synth, success = quick_convert(seg_map)
     else:
         output_text, output_image = drawer_bot.speak(code, user_txt)
         seg_map = cv2_to_base64(output_image)
