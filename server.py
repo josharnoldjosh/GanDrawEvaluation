@@ -171,6 +171,14 @@ def teller_message_recieved(data):
     code = data["code"]
     user_txt = data["text"]
     mode = data["mode"]
+
+    def quick_convert(seg_map):
+        synth, success = segmap_to_real(seg_map)
+        synth = image_to_base64(synth)
+        success = True
+        if "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" in synth:
+            success = False
+        return synth, success
     
     # Send data back
     token = ""
@@ -180,9 +188,16 @@ def teller_message_recieved(data):
         output_text = TalkativeDrawerBot.speak(code)
     else:
         output_text, output_image = drawer_bot.speak(code, user_txt)
-        synthetic = cv2_to_base64(output_image)
-
-    Store.save(code, user_txt, output_text, synth=synthetic)
+        seg_map = cv2_to_base64(output_image)
+        synth, success = quick_convert(seg_map)
+        if not success:
+            sleep(1)
+            synth, success = quick_convert(seg_map)
+            if not success:
+                sleep(2)
+                synth, success = quick_convert(seg_map)
+        
+    Store.save(code, user_txt, output_text, synth=synth, seg_map=seg_map, style="1", success=success)
 
     # Send response back
     emit("response", {"text":output_text, "token":token, "code":code})
@@ -190,6 +205,8 @@ def teller_message_recieved(data):
 @socketio.on('peek')
 def peek(data):
     image, peeks_left = Store.update_peek_image(data['code'])
+    print("sending back...?")
+    print(image)
     emit("peek_response", {"code":data['code'], 'image':image, 'peeks_left':peeks_left})
 
 @socketio.on('update_worker_id')

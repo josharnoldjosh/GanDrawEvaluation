@@ -592,10 +592,10 @@ class Store:
         We tag this turn as failed, so we know to update the synth from the seg map
         """
         data = Store.load_data(convo_id)
-        if not seg_map or not synth or not style:
-            data["dialog"].append({"user":Store.preprocess_string(user_utt), "bot":Store.preprocess_string(bot_utt)})            
-        elif synth and not seg_map and not style:
+        if synth and not seg_map and not style:            
             data["dialog"].append({"user":Store.preprocess_string(user_utt), "bot":Store.preprocess_string(bot_utt), "synth":synth, "generated_from_drawer_bot":True})            
+        elif not seg_map or not synth or not style:
+            data["dialog"].append({"user":Store.preprocess_string(user_utt), "bot":Store.preprocess_string(bot_utt)})                    
         else:    
             if not success: synth = data['dialog'][-1]['synth']            
             data["dialog"].append({"user":Store.preprocess_string(user_utt), "bot":Store.preprocess_string(bot_utt), "seg_map":seg_map, "synth":synth, "style":style, "success":success})            
@@ -672,10 +672,12 @@ class Store:
     def update_peek_image(cls, convo_id):        
         data = Store.load_data(convo_id)
         if data['num_peeks_left'] == 0: return path_to_bytes(data['target_image']['most_recent_peek_image'], 'image_data'), data['num_peeks_left']
-        data['target_image']['most_recent_peek_image'] = choice([x for x in os.listdir("./image_data/") if ".jpg" in x])
+                
+        data['target_image']['most_recent_peek_image'] = data['dialog'][-1]['synth']
+
         data['num_peeks_left'] = data['num_peeks_left'] - 1
         Store.save_data(convo_id, data)
-        return path_to_bytes(data['target_image']['most_recent_peek_image'], 'image_data'), data['num_peeks_left']
+        return data['target_image']['most_recent_peek_image'], data['num_peeks_left']
 
     @classmethod
     def user_type(cls, convo_id):
