@@ -27,8 +27,8 @@ pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/drawer/silent"
 drawer_bot = SilentDrawerBot(cfg, pretrained_model_path)
 print(drawer_bot)
 
-cfg = get_cfg("/home/jarnold9/GanDraw/GeNeVA/example_args/gandraw_args.json")
-pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/drawer/silent"
+cfg = get_cfg("/home/jarnold9/GanDraw/GeNeVA/example_args/gandraw_drawer_args.json")
+pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/drawer/talkative"
 talkative_drawer_bot = TalkativeDrawerBot(cfg, pretrained_model_path)
 print(talkative_drawer_bot)
 print("Done")
