@@ -22,10 +22,10 @@ pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/teller"
 teller_bot = TellerBot(cfg, pretrained_model_path)
 print(teller_bot)
 
-# cfg = get_cfg("/home/jarnold9/GanDraw/GeNeVA/example_args/gandraw_args.json")
-# pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/drawer/silent"
-# drawer_bot = DrawerBot(cfg, pretrained_model_path)
-# print(drawer_bot)
+cfg = get_cfg("/home/jarnold9/GanDraw/GeNeVA/example_args/gandraw_args.json")
+pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/drawer/silent"
+drawer_bot = DrawerBot(cfg, pretrained_model_path)
+print(drawer_bot)
 print("Done")
 
 @app.route('/')

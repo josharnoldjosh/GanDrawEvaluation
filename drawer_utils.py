@@ -1,3 +1,5 @@
+import numpy as np
+
 def _parse_glove(glove_path):
     glove = {}
     with open(glove_path, 'r') as f:
