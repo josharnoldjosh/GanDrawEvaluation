@@ -24,8 +24,13 @@ print(teller_bot)
 
 cfg = get_cfg("/home/jarnold9/GanDraw/GeNeVA/example_args/gandraw_args.json")
 pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/drawer/silent"
-drawer_bot = DrawerBot(cfg, pretrained_model_path)
+drawer_bot = SilentDrawerBot(cfg, pretrained_model_path)
 print(drawer_bot)
+
+cfg = get_cfg("/home/jarnold9/GanDraw/GeNeVA/example_args/gandraw_args.json")
+pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/drawer/silent"
+talkative_drawer_bot = TalkativeDrawerBot(cfg, pretrained_model_path)
+print(talkative_drawer_bot)
 print("Done")
 
 @app.route('/')
@@ -40,6 +45,11 @@ def talkative_drawer(convo_id, target_image):
     GameSelector.init_game(convo_id, user_type=UserType.talkative_drawer) 
     GameSelector.update_target_image(convo_id, target_image)   
     current_convo = Store.get_dialog(convo_id)
+    if current_convo.strip() == "":
+        drawer_bot.reset_drawer() # we reset if its a fresh convo
+        print("RESETTING!!!")
+    else:
+        print("REUSING!!!!")
     synth, seg_map, peek_image = Store.target_image_data(convo_id)
     can_submit = GameSelector.can_submit(convo_id)
     token = ""
@@ -56,6 +66,11 @@ def silent_drawer(convo_id, target_image):
     GameSelector.init_game(convo_id, user_type=UserType.silent_drawer)   
     GameSelector.update_target_image(convo_id, target_image)        
     current_convo = Store.get_dialog(convo_id)
+    if current_convo.strip() == "":
+        drawer_bot.reset_drawer() # we reset if its a fresh convo
+        print("RESETTING!!!")
+    else:
+        print("REUSING!!!!")
     synth, seg_map, peek_image = Store.target_image_data(convo_id)
     can_submit = GameSelector.can_submit(convo_id)
     token = ""
@@ -164,9 +179,10 @@ def teller_message_recieved(data):
     if mode == "talkative":
         output_text = TalkativeDrawerBot.speak(code)
     else:
-        output_text = SilentDrawerBot.speak(code)
+        output_text, output_image = drawer_bot.speak(code, user_txt)
+        synthetic = cv2_to_base64(output_image)
 
-    Store.save(code, user_txt, output_text)
+    Store.save(code, user_txt, output_text, synth=synthetic)
 
     # Send response back
     emit("response", {"text":output_text, "token":token, "code":code})

@@ -24,6 +24,17 @@ def byte_string_to_cv2(base64_string):
     image = Image.open(io.BytesIO(imgdata))
     return cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
 
+def cv2_to_base64(image):
+    try:
+        # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = Image.fromarray(image)
+        imgByteArr = io.BytesIO()
+        image.save(imgByteArr, format='PNG')        
+        return 'data:image/png;base64,'+ base64.b64encode(imgByteArr.getvalue()).decode('ascii')
+    except Exception as error:
+        print("Uh oh! There was an error!", error)
+        return ""
+
 import easydict
 def get_cfg(config_file):
     with open(config_file, 'r') as f:
