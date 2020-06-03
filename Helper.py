@@ -24,6 +24,12 @@ def byte_string_to_cv2(base64_string):
     image = Image.open(io.BytesIO(imgdata))
     return cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
 
+def byte_string_to_image(base64_string):            
+    base64_string = re.sub('^data:image/.+;base64,', '', base64_string)    
+    imgdata = base64.b64decode(base64_string)
+    image = Image.open(io.BytesIO(imgdata))
+    return image
+
 def image_to_base64(image):
     imgByteArr = io.BytesIO()
     image.save(imgByteArr, format='PNG')        

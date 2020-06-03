@@ -19,6 +19,7 @@ import cv2
 from store import *
 from Helper import *
 from uuid import uuid4
+from statistics import mean
 
 class Seg2Real:
 
@@ -360,27 +361,39 @@ class Seg2Real:
                 gt_draw_shared[key] = {"draw_center": paired_draw_centers, "gt_center": paired_gt_centers, "max_num_objects": max(len(draw_shared[key]), len(gt_shared[key]))}
         return gt_draw_shared
 
-data = [x.split('.json')[0] for x in os.listdir('./saved_data/') if ".json" in x]
+# data = [x.split('.json')[0] for x in os.listdir('./saved_data/') if ".json" in x]
 
-for item in data:
-    try:
-        last_drawn_image = Store.get_seg_data(item)[-1]
-        _, seg_map, _ = Store.target_image_data(item)
-    except: continue
-    last_drawn_image = byte_string_to_cv2(last_drawn_image)    
-    seg_map = byte_string_to_cv2(seg_map)
-    last_drawn_image = cv2.cvtColor(last_drawn_image, cv2.COLOR_BGR2GRAY)
-    last_drawn_image = Seg2Real().preprocess_segmap(last_drawn_image)
-    last_drawn_image = cv2.resize(last_drawn_image, (350, 350))
-    seg_map = cv2.cvtColor(seg_map, cv2.COLOR_BGR2GRAY)
-    seg_map = Seg2Real().preprocess_segmap(seg_map)
-    seg_map = cv2.resize(seg_map, (350, 350))    
-    result = 0.0
-    result = Seg2Real().gaugancodraw_eval_metrics(last_drawn_image, seg_map, 182)    
-    result = round(result, 2)
-    token = str(uuid4())[:8]
-    # os.mkdir(f"score_analysis/{token}/")
-    cv2.imwrite(f"score_analysis/{result}_{token}_user.jpg", last_drawn_image)
-    cv2.imwrite(f"score_analysis/{result}_{token}_ground_truth.jpg", seg_map)
-    with open(f"score_analysis/{result}_{token}.txt", "w") as file:
-        file.write(str(result))
+# average_score = []
+
+# for item in data:
+#     checker = Store.load_data(item)
+#     # if checker['user_type'] != 2: continue
+#     try:
+#         last_drawn_image = Store.get_seg_data(item)[-1]
+#         _, seg_map, _ = Store.target_image_data(item)
+#     except: continue
+#     last_drawn_image = byte_string_to_cv2(last_drawn_image)    
+#     seg_map = byte_string_to_cv2(seg_map)
+
+#     last_drawn_image = cv2.cvtColor(last_drawn_image, cv2.COLOR_BGR2RGB)
+#     last_drawn_image = last_drawn_image[:, :, 0]
+
+#     last_drawn_image = cv2.resize(last_drawn_image, (350, 350))
+
+#     seg_map = cv2.cvtColor(seg_map, cv2.COLOR_BGR2RGB)
+#     # seg_map = Seg2Real().preprocess_segmap(seg_map)
+#     seg_map = seg_map[:, :, 0]
+
+#     seg_map = cv2.resize(seg_map, (350, 350))    
+#     result = 0.0
+#     result = Seg2Real().gaugancodraw_eval_metrics(last_drawn_image, seg_map, 182)
+#     result = round(result, 2)
+#     token = str(uuid4())[:8]
+#     # os.mkdir(f"score_analysis/{token}/")
+#     cv2.imwrite(f"score_analysis/{result}_{token}_user.jpg", last_drawn_image)
+#     cv2.imwrite(f"score_analysis/{result}_{token}_ground_truth.jpg", seg_map)
+#     with open(f"score_analysis/{result}_{token}.txt", "w") as file:
+#         file.write(str(result))
+#     if result != 0.0:
+#         average_score += [result]
+# print("Mean drawer bot:", mean(average_score))

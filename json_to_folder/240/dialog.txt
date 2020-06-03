@@ -1,0 +1,10 @@
+User: water
+Bot: okay it
+User: moutain
+Bot: okay
+User: falls
+Bot: okay
+User: water falls
+Bot: okay
+User: beautifull
+Bot: okay it

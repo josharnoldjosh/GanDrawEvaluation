@@ -1,0 +1,10 @@
+User: mountain
+Bot: okay it
+User: cloud
+Bot: okay
+User: wonderful
+Bot: okay
+User: beautiful picture
+Bot: okay
+User: blue sky
+Bot: okay

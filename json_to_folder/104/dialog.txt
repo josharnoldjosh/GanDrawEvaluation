@@ -1,0 +1,10 @@
+User: 1st one
+Bot: okay
+User: it is  right 
+Bot: okay
+User: snow field with few grass
+Bot: okay
+User: 2 big clouds together in the right side of the sky
+Bot: okay it
+User: many trees on the snow
+Bot: okay it

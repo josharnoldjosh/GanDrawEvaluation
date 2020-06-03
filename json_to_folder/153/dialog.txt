@@ -1,0 +1,10 @@
+User: river
+Bot: okay
+User: trees
+Bot: okay
+User: cloud
+Bot: okay
+User: the image was beautifull
+Bot: okay
+User: blue sky
+Bot: okay

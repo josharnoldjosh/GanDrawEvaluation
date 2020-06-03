@@ -1,0 +1,10 @@
+User: water
+Bot: okay it
+User: mountain
+Bot: okay
+User: stone
+Bot: okay
+User: sky
+Bot: okay
+User: sky blue
+Bot: okay

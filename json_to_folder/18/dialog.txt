@@ -1,0 +1,10 @@
+User: there are mountains on the background, reaching 3/4 of the page in height
+Bot: okay it
+User: there are a mixture of mostly green colored and some yellow colored pine trees covering about half of the page in height, mostly on the sides.
+Bot: okay is
+User: there are some orange floors on the very bottom of the page.
+Bot: okay it
+User: the sky in the back is filled with grey and white clouds.
+Bot: okay it
+User: that is it
+Bot: okay it

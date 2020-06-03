@@ -1,0 +1,10 @@
+User: trees
+Bot: okay it
+User: grass
+Bot: okay
+User: blue sky
+Bot: done
+User: tall trees
+Bot: done
+User: beautifull
+Bot: done

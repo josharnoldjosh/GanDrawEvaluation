@@ -1,0 +1,10 @@
+User:   there is a florest in the background
+Bot: okay it
+User: there is a flat ground with undergrowth
+Bot: okay it
+User: there is a lake 
+Bot: okay it
+User: the weather is sunny with some clouds
+Bot: okay it
+User: there is a river
+Bot: okay it

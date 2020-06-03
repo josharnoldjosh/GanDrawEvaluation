@@ -18,7 +18,7 @@ socketio = SocketIO(app, logger=True)
 # Init the bots
 print("Loading bots...")
 cfg = get_cfg("/home/jarnold9/GanDraw/GeNeVA/example_args/gandraw_teller_args.json")
-pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/teller"
+pretrained_model_path = "/home/jarnold9/GanDraw/GeNeVA/logs/teller/teller_update"
 teller_bot = TellerBot(cfg, pretrained_model_path)
 print(teller_bot)
 

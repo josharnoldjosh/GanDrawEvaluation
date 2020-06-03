@@ -1,0 +1,10 @@
+User: mountain
+Bot: okay it
+User: sky
+Bot: okay
+User: trees
+Bot: okay
+User: green colour
+Bot: okay
+User: snow
+Bot: okay

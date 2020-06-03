@@ -1,0 +1,10 @@
+User: mountain
+Bot: okay it
+User: ice
+Bot: okay
+User: trees
+Bot: done
+User: valleys
+Bot: done
+User: beautifull
+Bot: done

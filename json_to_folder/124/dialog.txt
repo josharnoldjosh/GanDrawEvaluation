@@ -1,0 +1,10 @@
+User: there is a mountain
+Bot: okay it
+User: there is a tree
+Bot: okay
+User: mountain covered by ice
+Bot: okay it
+User: beautiful
+Bot: okay
+User: grass
+Bot: okay it
